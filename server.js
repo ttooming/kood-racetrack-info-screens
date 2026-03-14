@@ -4,10 +4,10 @@ const { Server } = require("socket.io");//realtime connection
 
 const app = express();
 const server = http.createServer(app);// Server with express
-const io = new Server(server);//Socket + Express
+const io = new Server(server);// Socket + Express
 
 // Express route handler
-app.use(express.static("public"));// Directory
+app.use(express.static("public"));// Base directory
 app.get("/", (req, response) => {
     response.send("Racetrack server is running");
 });
@@ -33,42 +33,26 @@ app.get("/race-flags", (req, response) => {
     response.sendFile(__dirname + "/public/race-flags/index.html");
 });
 
-// Incase of server connection
+//Service constructor
+const raceService = require("./services/raceService");
+
+// Incase of race state change
 io.on("connection", (socket) => {
     console.log("Client connected");
     socket.on("disconnect", () => {
         console.log("Client disconnected");
+    });
+    socket.on("startRace", () => {
+        raceService.startRace(io);
+    });
+    socket.on("changeRaceMode", (newMode) => {
+        raceService.changeRaceMode(io, newMode);
+    });
+    socket.on("finishRace", () => {
+        raceService.finishRace(io);
     });
 });
 
 server.listen(3000, () => {
     console.log("Server running on port 3000");
 });
-
-//Link to race state
-const raceState = require("./state/raceState");
-
-//Server runtime considering execution syntax
-//60 seconds in dev mode, 600 seconds in normal production
-const countdown = process.env.NODE_ENV === "development" ? 60 : 600;
-
-//Racetimer from "countdown" 
-let raceTimer = null;
-
-function startTimer() {
-    let remainingTime = countdown;
-    raceState.timer = remainingTime;
-
-    //Timer loop
-    raceTimer = setInterval(() => {
-        remainingTime--;
-        raceState.timer = remainingTime;
-
-        io.emit("timerUpdate", remainingTime)
-
-        if (remainingTime <= 0) {
-            clearInterval(raceTimer);
-            finishRace(); //Declared in service/raceService.js
-        }
-    }, 1000);
-}
