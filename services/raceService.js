@@ -1,6 +1,6 @@
 //Dependency
 const validTransition = require("../raceStateMachine"); // Import state machine for control
-const startTimer = require("../utils/timer");
+const { startTimer } = require("../utils/timer");
 
 //"io" is our brain of operation
 function changeRaceMode(io, newMode) {
@@ -15,7 +15,9 @@ function changeRaceMode(io, newMode) {
 
 function startRace(io) {
     raceState.raceMode = "SAFE";
-    startTimer(io);
+    startTimer(io, countdown, () => {
+        finishRace(io);
+    });
     raceState.currentSession = raceState.sessions.shift();
     io.emit("raceModeChanged", raceState.currentSession)
 }
