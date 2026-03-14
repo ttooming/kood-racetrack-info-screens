@@ -1,6 +1,6 @@
 //Dependency
-const validTransition = require("../../raceStateMachine"); // Import state machine for control
-const startTimer = require("../../utils/timer");
+const validTransition = require("../raceStateMachine"); // Import state machine for control
+const startTimer = require("../utils/timer");
 
 //"io" is our brain of operation
 function changeRaceMode(io, newMode) {

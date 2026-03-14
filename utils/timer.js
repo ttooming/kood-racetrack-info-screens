@@ -1,5 +1,5 @@
 //Race state constructor
-const { finishRace } = require("../public/services/raceService");
+const { finishRace } = require("../services/raceService");
 const raceState = require("../state/raceState");
 
 //Server runtime considering execution syntax
