@@ -18,14 +18,22 @@
         socket.on("raceModeChanged", (mode) => {
             const body = document.querySelector("body");
             if (mode === "SAFE") {
+                document.body.style.backgroundImage = 'none';
                 body.style.backgroundColor = "green";
             }
             else if (mode === "HAZARD") {
+                document.body.style.backgroundImage = 'none';
                 body.style.backgroundColor = "yellow";
             }
             else if (mode === "DANGER") {
+                document.body.style.backgroundImage = 'none';
                 body.style.backgroundColor = "red";
             }
+            else if (mode === "FINISH") {
+                body.style.backgroundImage = 'conic-gradient(#fff 90deg, #000 90deg 180deg, #fff 180deg 270deg, #000 270deg)';
+                body.style.backgroundSize = "100px 100px";
+            }
+
         })
     </script>
 </body>
