@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="et">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            height: 100px;
+            width: 100px;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Race control</h1>
+
+    <div class="container">
+        <button id="safe">Safe</button>
+        <button id="hazard">Hazard</button>
+        <button id="danger">Danger</button>
+        <button id="finish">Finish</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();//mis alguses defineerisime uue serverina
+        socket.on("connect", () => {
+            console.log("race-control connected to server");
+        });
+
+        const safeButton = document.getElementById("safe");
+        const hazardButton = document.getElementById("hazard");
+        const dangerButton = document.getElementById("danger");
+        const finishButton = document.getElementById("finish");
+
+        safeButton.addEventListener("click", () => {
+            socket.emit("changeRaceMode", "SAFE");
+        })
+        hazardButton.addEventListener("click", () => {
+            socket.emit("changeRaceMode", "HAZARD");
+        })
+        dangerButton.addEventListener("click", () => {
+            socket.emit("changeRaceMode", "DANGER");
+        })
+        finishButton.addEventListener("click", () => {
+            socket.emit("changeRaceMode", "FINISH");
+        })
+    </script>
+</body>
+
+</html>

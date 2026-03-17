@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="et">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race flag</title>
+</head>
+
+<body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();//mis alguses defineerisime uue serverina
+        socket.on("connect", () => {
+            console.log("Connected to server");
+
+        });
+        socket.on("raceModeChanged", (mode) => {
+            const body = document.querySelector("body");
+            if (mode === "SAFE") {
+                body.style.backgroundColor = "green";
+            }
+            else if (mode === "HAZARD") {
+                body.style.backgroundColor = "yellow";
+            }
+            else if (mode === "DANGER") {
+                body.style.backgroundColor = "red";
+            }
+        })
+    </script>
+</body>
+
+</html>
