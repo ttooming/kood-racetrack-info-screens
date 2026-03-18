@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "NODE_ENV=development node server.js"
+    "dev": "cross-env NODE_ENV=development node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "cross-env": "^10.1.0",
     "express": "^5.2.1",
     "socket.io": "^4.8.3"
   },

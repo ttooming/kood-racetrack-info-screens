@@ -12,7 +12,6 @@ function changeRaceMode(io, newMode) {
     // Possibilities of new mode as "HAZARD" or "DANGER"
     raceState.raceMode = newMode;
     io.emit("raceModeChanged", newMode);
-
 }
 
 function startRace(io) {
@@ -21,12 +20,14 @@ function startRace(io) {
         finishRace(io);
     });
     raceState.currentSession = raceState.sessions.shift();
-    io.emit("raceModeChanged", raceState.currentSession)
+    io.emit("raceStarted", raceState.currentSession)
+    io.emit("raceModeChanged", "SAFE")
 }
 
 function finishRace(io) {
     if (raceState.raceMode = "FINISH")
         return;
+    raceState.raceMode = "FINISH";
     io.emit("raceModeChanged", "FINISH")
 }
 
