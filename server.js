@@ -1,23 +1,32 @@
-const express = require("express");//ekspress rakendus moodul
-const webPage = require("http");//aadressi moodul
-const { Server } = require("socket.io");//realtime uhendus moodul
-
+const express = require('express');
 const app = express();
-const server = webPage.createServer(app);//meie lahendus
-const io = new Server(server);//realtime tulemus
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
-app.use(express.static("public"));//kasuta weebilehte kaustast
-app.get("/", (reg, res) => {
-    res.send("Racetrack server is running");
-});
+app.use(express.static('public'));
 
-io.on("connection", (socket) => {
-    console.log("Client connected");
-    socket.on("disconnect", () => {
-        console.log("Client disconnected");
+io.on('connection', (socket) => {
+    console.log('Kasutaja ühendatud!');
+
+    // Kuulame stardi nupuvajutust
+    socket.on('startRace', () => {
+        console.log('Sõit algas!');
+        io.emit('raceModeChanged', 'SAFE'); // Saadame kõigile info: Roheline!
+    });
+
+    // Kuulame režiimi muutust (Hazard, Danger jne)
+    socket.on('changeRaceMode', (newMode) => {
+        console.log('Uus režiim:', newMode);
+        io.emit('raceModeChanged', newMode); // Saadame selle kohe kõigile laiali
+    });
+
+    // Kuulame ringide lugemist
+    socket.on('lapCompleted', (data) => {
+        console.log('Ring läbitud:', data);
+        io.emit('lapUpdate', data);
     });
 });
 
-server.listen(3000, () => {
-    console.log("Server running on port 3000");
+http.listen(3000, () => {
+    console.log('TEST-SERVER JOOKSEB PORDIL 3000');
 });
