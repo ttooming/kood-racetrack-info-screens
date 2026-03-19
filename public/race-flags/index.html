@@ -1,41 +1,20 @@
 <!DOCTYPE html>
-<html lang="et">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Race flag</title>
+    <title>F1 Race Flags</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div id="flag-overlay" class="flag-safe">
+        <button id="fullscreen-btn">Full Screen</button>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();//mis alguses defineerisime uue serverina
-        socket.on("connect", () => {
-            console.log("Connected to server");
-
-        });
-        socket.on("raceModeChanged", (mode) => {
-            const body = document.querySelector("body");
-            if (mode === "SAFE") {
-                document.body.style.backgroundImage = 'none';
-                body.style.backgroundColor = "green";
-            }
-            else if (mode === "HAZARD") {
-                document.body.style.backgroundImage = 'none';
-                body.style.backgroundColor = "yellow";
-            }
-            else if (mode === "DANGER") {
-                document.body.style.backgroundImage = 'none';
-                body.style.backgroundColor = "red";
-            }
-            else if (mode === "FINISH") {
-                body.style.backgroundImage = 'conic-gradient(#fff 90deg, #000 90deg 180deg, #fff 180deg 270deg, #000 270deg)';
-                body.style.backgroundSize = "100px 100px";
-            }
-
-        })
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,58 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background-color: #000;
+}
+
+#flag-overlay {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    transition: background-color 0.1s ease;
+}
+
+.flag-safe { background-color: #00c21d  !important; }    /* F1 Roheline */
+.flag-hazard { background-color: #FFF700 !important; }  /* F1 Kollane */
+.flag-danger { background-color: #FF1801 !important; }   /* F1 Punane */
+
+.flag-finish {
+    background-color: #fff;
+    background-image: 
+        conic-gradient(#000 0.25turn, transparent 0.25turn 0.5turn, #000 0.5turn 0.75turn, transparent 0.75turn);
+    background-size: 20vh 20vh; 
+}
+
+@keyframes f1-flash {
+    0% { opacity: 1; }
+    48% { opacity: 1; }
+    50% { opacity: 0; } 
+    98% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.flag-hazard, .flag-danger {
+    animation: f1-flash 0.6s infinite;
+}
+
+#fullscreen-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 12px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    z-index: 9999;
+    transition: background 0.2s;
+}
+
+#fullscreen-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
