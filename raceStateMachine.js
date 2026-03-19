@@ -3,7 +3,7 @@ function validTransition(from, to) {
     const allowed = {
         DANGER: ["SAFE"],
         SAFE: ["HAZARD", "DANGER", "FINISH"],
-        HAZARD: ["DANGER", "FINISH"],
+        HAZARD: ["SAFE", "DANGER", "FINISH"],
         FINISH: []
     }
     return allowed[from].includes(to);

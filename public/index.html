@@ -4,19 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Racetrack</title>
+    <title>Beachside Racetrack</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Racetrack</h1>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();//mis alguses defineerisime uue serverina
-        socket.on("connect", () => {
-            console.log("Connected to server");
+    <div class="admin-panel">
+        <h1>Beachside Racetrack</h1>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();//mis alguses defineerisime uue serverina
+            socket.on("connect", () => {
+                console.log("Connected to server");
 
-        });
-    </script>
+            });
+        </script>
+        <div class="session-controls">
+            <p id="status-text"> <span id="current-mode">EMPLOYEE INTERFACES (LOGIN NEEDED)</span></p>
+            <div class="flag-controls">
+                <a id="start-btn" class="btn-start" href="/front-desk">Front Desk</a>
+                <a id=" start-btn" class="btn-start" href="/lap-line-tracker">Lap-line Tracker</a>
+                <a id="start-btn" class="btn-start" href="/race-control">Race Control</a>
+            </div>
+        </div>
+        <div class="session-controls">
+
+            <p id="status-text"><span id="current-mode">PUBLIC INTERFACES</span></p>
+            <div class="flag-controls">
+                <a id="start-btn" class="btn-start" href="/leader-board">Leader Board</a>
+                <a id="start-btn" class="btn-start" href="/next-race">Next Race</a>
+                <a id="start-btn" class="btn-start" href="/race-countdown">Race Countdown</a>
+                <a id="start-btn" class="btn-start" href="/race-flags">Race Flags</a>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

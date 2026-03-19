@@ -23,7 +23,7 @@ document.getElementById("finish").onclick = () => changeMode("FINISH");
 
 socket.on('raceModeChanged', (mode) => {
     modeDisplay.innerText = mode;
-    
+
     if (mode === 'SAFE') modeDisplay.style.color = '#00D21D';
     else if (mode === 'HAZARD') modeDisplay.style.color = '#FFF200';
     else if (mode === 'DANGER') modeDisplay.style.color = '#FF0000';

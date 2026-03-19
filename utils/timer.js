@@ -6,7 +6,6 @@ const raceState = require("../state/raceState");
 const countdown = process.env.NODE_ENV === "development" ? 60 : 600;
 function startTimer(io, countdown, onFinish) {
     let remainingTime = countdown;
-
     //Timer loop after every second
     const raceTimer = setInterval(() => { //Node.js built-in feature setInterval(function, milliseconds)
         remainingTime--;

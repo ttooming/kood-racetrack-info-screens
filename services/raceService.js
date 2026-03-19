@@ -2,6 +2,7 @@
 const validTransition = require("../raceStateMachine"); // Import state machine for control
 const { startTimer } = require("../utils/timer");
 const raceState = require("../state/raceState");
+const countdown = process.env.NODE_ENV === "development" ? 60 : 600;
 
 //"io" is our brain of operation
 function changeRaceMode(io, newMode) {
@@ -25,7 +26,7 @@ function startRace(io) {
 }
 
 function finishRace(io) {
-    if (raceState.raceMode = "FINISH")
+    if (raceState.raceMode === "FINISH")
         return;
     raceState.raceMode = "FINISH";
     io.emit("raceModeChanged", "FINISH")
