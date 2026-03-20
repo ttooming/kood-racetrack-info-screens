@@ -28,7 +28,7 @@ function startRace(io) {
 }
 
 function finishRace(io) {
-    if (!validTransition(raceState.raceMode, "FINISH")) {
+    if (raceState.raceMode === "FINISH") {
         return;
     }
     raceState.raceMode = "FINISH";
