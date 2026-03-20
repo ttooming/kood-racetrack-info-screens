@@ -3,7 +3,6 @@ const raceState = require("../state/raceState");
 
 function startTimer(io, countdown, onFinish) {
     let remainingTime = countdown;
-
     //Timer loop after every second
     const raceTimer = setInterval(() => { //Node.js built-in feature setInterval(function, milliseconds)
         remainingTime--;

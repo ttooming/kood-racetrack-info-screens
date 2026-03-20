@@ -1,0 +1,101 @@
+body {
+    background-color: #121212;
+    color: white;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    margin: 0;
+}
+
+.admin-panel {
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+h1 {
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #555;
+}
+
+.session-controls {
+    margin: 30px 0;
+}
+
+.btn-start {
+    width: 100%;
+    padding: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.btn-start:active {
+    background-color: #0056b3;
+}
+
+#status-text {
+    font-size: 1rem;
+    color: #888;
+}
+
+#current-mode {
+    font-weight: bold;
+    color: #fff;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #333;
+    margin: 30px 0;
+}
+
+.flag-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.btn-f1 {
+    height: 120px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.btn-f1:active {
+    transform: scale(0.95);
+}
+
+.btn-safe {
+    background-color: #00D21D;
+    color: black;
+}
+
+.btn-hazard {
+    background-color: #FFF200;
+    color: black;
+}
+
+.btn-danger {
+    background-color: #FF0000;
+    color: white;
+}
+
+.btn-finish {
+    background-color: white;
+    color: black;
+    border: 4px dashed black;
+}
