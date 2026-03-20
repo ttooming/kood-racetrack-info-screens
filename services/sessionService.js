@@ -43,7 +43,7 @@ function createSession(io) {
 function endSession(io) {
     raceState.raceMode = "DANGER";
     raceState.currentSession = null;
-    io.emit("sessionEnded");
+    io.emit("sessionEnded");//nextRace and leaderBoard
 }
 //Accessible elsewhere
 module.exports = {

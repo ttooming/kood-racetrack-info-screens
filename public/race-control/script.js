@@ -18,12 +18,14 @@ const changeMode = (mode) => {
 document.getElementById("safe").onclick = () => changeMode("SAFE");
 document.getElementById("hazard").onclick = () => changeMode("HAZARD");
 document.getElementById("danger").onclick = () => changeMode("DANGER");
-document.getElementById("finish").onclick = () => changeMode("FINISH");
-
+document.getElementById("finish").onclick = () => {
+    socket.emit("finishRace");
+}
+    ;
 
 socket.on('raceModeChanged', (mode) => {
     modeDisplay.innerText = mode;
-    
+
     if (mode === 'SAFE') modeDisplay.style.color = '#00D21D';
     else if (mode === 'HAZARD') modeDisplay.style.color = '#FFF200';
     else if (mode === 'DANGER') modeDisplay.style.color = '#FF0000';
