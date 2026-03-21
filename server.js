@@ -1,10 +1,34 @@
-const express = require("express");// webserver
+// Setting up webserver, real-time utility
+const express = require("express");
 const http = require("http");
-const { Server } = require("socket.io");//realtime connection
+const { Server } = require("socket.io");
+//Targets of saved raceState data
+const raceState = require("./state/raceState");
+const loadState = require("./utils/loadState");
 
+//Execution of program
 const app = express();
 const server = http.createServer(app);// Server with express
 const io = new Server(server);// Socket + Express
+
+//Loading values to persist data after server restart
+const savedState = loadState();
+
+if (savedState) {
+    Object.assign(raceState, savedState);
+}
+if (raceState.raceMode === "SAFE") {
+    // Incase of connection loss during timer countdown
+    const restarted = Date.now();
+    const elapsed = Math.floor((restarted - raceState.startedAt) / 1000);
+    const remainder = raceState.duration - elapsed;
+    // Decision considering remainder time
+    if (remainder > 0) {
+        startTimer(io, remainder, () => finishRace(io));
+    } else {
+        finishRace(io);
+    }
+}
 
 // Express route handler
 app.use(express.static("public"));// Base directory
@@ -33,15 +57,20 @@ app.get("/race-flags", (req, response) => {
     response.sendFile(__dirname + "/public/race-flags/index.html");
 });
 
-//Service constructor
+//Services import
 const raceService = require("./services/raceService");
+const sessionService = require("./services/sessionService");
 
-// Incase of race state change
+// Output of server status
 io.on("connection", (socket) => {
     console.log("Client connected");
     socket.on("disconnect", () => {
         console.log("Client disconnected");
     });
+    socket.emit("raceModeChanged", raceState.raceMode);
+    socket.emit("timerUpdate", raceState.timer);
+
+    // Incase of race state change
     socket.on("startRace", () => {
         raceService.startRace(io);
     });
@@ -50,6 +79,10 @@ io.on("connection", (socket) => {
     });
     socket.on("finishRace", () => {
         raceService.finishRace(io);
+    });
+    socket.on("endSession", () => {
+        console.log("endSession triggered");
+        sessionService.endSession(io);
     });
 });
 
