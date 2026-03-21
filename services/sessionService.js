@@ -24,20 +24,45 @@ function addDriver(sessionId, name, carNumber) {
         lastLapTimestamp: null
     };
 }
+
+function editDriver(sessionId, newName, carNumber) {
+    const session = raceState.sessions.find(s => s.id === sessionId);
+    if (!session) return;
+
+    const car = session.drivers.find(d => d.car === carNumber);
+    if (!car) return;
+
+    if (session.drivers.some(d => d.name.toLowerCase() === newName.toLowerCase())) {
+        return { error: "Driver with that name already exists" };
+    }
+
+    car.name = newName;
+}
+
 function removeDriver(sessionId, name) {
     const session = raceState.sessions.find(s => s.id === sessionId);
     if (!session) return;
     session.drivers = session.drivers.filter(d => d.name !== name);
 }
-function createSession(io) {
+function createSession(io, sessionDate) {
     //Making object
     const session = {
         id: raceState.sessions.length + 1,
+        title: "session " + raceState.sessions.length + 1,
+        date: sessionDate,
         drivers: [],
         cars: {}
     };
     raceState.sessions.push(session); //Adds to the array
-    return session;
+    io.emit("createdSession");
+}
+
+function removeSession(io, sessionId) {
+    const session = raceState.sessions.find(s => s.id === sessionId);
+    if (!session) return;
+
+    raceState.sessions.filter(s => s.id !== sessionId);//remove from the array
+    io.emit("removedSession");
 }
 
 function endSession(io) {
@@ -48,7 +73,9 @@ function endSession(io) {
 //Accessible elsewhere
 module.exports = {
     addDriver,
+    editDriver,
     removeDriver,
     createSession,
+    removeSession,
     endSession
 }

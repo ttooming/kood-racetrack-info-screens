@@ -23,7 +23,7 @@ function startRace(io) {
         finishRace(io);
     });
     raceState.currentSession = raceState.sessions.shift();
-    io.emit("raceStarted", raceState.currentSession);//go to leader board and next race
+    io.emit("raceStarted", raceState.currentSession); //go to leader board and next race
     io.emit("raceModeChanged", "SAFE");
 }
 

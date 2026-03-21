@@ -35,6 +35,7 @@ app.get("/race-flags", (req, response) => {
 
 //Service constructor
 const raceService = require("./services/raceService");
+const lapService = require("./services/lapService");
 
 // Incase of race state change
 io.on("connection", (socket) => {
@@ -51,6 +52,10 @@ io.on("connection", (socket) => {
     socket.on("finishRace", () => {
         raceService.finishRace(io);
     });
+
+    socket.on("lapTracked", (carNumber) => {
+        lapService.recordLap(io, carNumber);
+    })
 });
 
 server.listen(3000, () => {
