@@ -19,8 +19,7 @@ function changeRaceMode(io, newMode) {
 
 function startRace(io) {
     raceState.raceMode = "SAFE";
-    //Date data for loadState function
-    raceState.startedAt = Date.now();
+    //Data for loadState function
     raceState.duration = countdown;
 
     startTimer(io, countdown, () => {

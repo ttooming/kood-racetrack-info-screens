@@ -1,7 +1,7 @@
 // Setting up raceMode transitions
 function validTransition(from, to) {
     const allowed = {
-        DANGER: ["SAFE"],
+        DANGER: ["SAFE", "FINISH"],
         SAFE: ["HAZARD", "DANGER", "FINISH"],
         HAZARD: ["SAFE", "DANGER", "FINISH"],
         FINISH: []

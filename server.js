@@ -2,9 +2,15 @@
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+
 //Targets of saved raceState data
 const raceState = require("./state/raceState");
 const loadState = require("./utils/loadState");
+
+//Services import
+const raceService = require("./services/raceService");
+const sessionService = require("./services/sessionService");
+const timer = require("./utils/timer");
 
 //Execution of program
 const app = express();
@@ -19,14 +25,12 @@ if (savedState) {
 }
 if (raceState.raceMode === "SAFE") {
     // Incase of connection loss during timer countdown
-    const restarted = Date.now();
-    const elapsed = Math.floor((restarted - raceState.startedAt) / 1000);
-    const remainder = raceState.duration - elapsed;
+    const remainder = raceState.timer;
     // Decision considering remainder time
     if (remainder > 0) {
-        startTimer(io, remainder, () => finishRace(io));
+        timer.startTimer(io, remainder, () => raceService.finishRace(io));
     } else {
-        finishRace(io);
+        raceService.finishRace(io);
     }
 }
 
@@ -57,10 +61,6 @@ app.get("/race-flags", (req, response) => {
     response.sendFile(__dirname + "/public/race-flags/index.html");
 });
 
-//Services import
-const raceService = require("./services/raceService");
-const sessionService = require("./services/sessionService");
-
 // Output of server status
 io.on("connection", (socket) => {
     console.log("Client connected");
@@ -72,16 +72,21 @@ io.on("connection", (socket) => {
 
     // Incase of race state change
     socket.on("startRace", () => {
+        console.log("Race started");
         raceService.startRace(io);
     });
     socket.on("changeRaceMode", (newMode) => {
         raceService.changeRaceMode(io, newMode);
     });
     socket.on("finishRace", () => {
+        console.log("Race ended");
         raceService.finishRace(io);
     });
+    socket.on("createSession", () => {
+        sessionService.createSession(io);
+    });
     socket.on("endSession", () => {
-        console.log("endSession triggered");
+        console.log("Session ended");
         sessionService.endSession(io);
     });
 });

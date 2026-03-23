@@ -1,17 +1,22 @@
-//Race state constructor
+//Race state objects
 const raceState = require("../state/raceState");
-
-//Server runtime considering execution syntax
-//60 seconds in dev mode, 600 seconds in normal production
-const countdown = process.env.NODE_ENV === "development" ? 60 : 600;
+const saveState = require("../utils/saveState");
 function startTimer(io, countdown, onFinish) {
+    //Timer runtime considering server execution syntax
     let remainingTime = countdown;
+    raceState.timer = remainingTime;
     //Timer loop after every second
     const raceTimer = setInterval(() => { //Node.js built-in feature setInterval(function, milliseconds)
+        if (raceState.raceMode === "DANGER") {
+            return;
+        }
         remainingTime--;
+        raceState.timer = remainingTime;
+        saveState(raceState);
         //Timer broadcast
+        console.log(remainingTime);
         io.emit("timerUpdate", remainingTime);
-        if (remainingTime <= 0) {
+        if (remainingTime <= 0 || raceState.raceMode === "FINISH") {
             clearInterval(raceTimer);
             onFinish(); //Callback
         }
