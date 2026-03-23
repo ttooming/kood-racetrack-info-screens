@@ -61,8 +61,9 @@ document.getElementById("remove-racer").onclick = () => {
 }
 
 
-const fillSessionAndCarSelector = (sessions) => {
-    const sessionSelector = document.getElementById("existed_sessions");
+const fillSessionSelector = (sessions) => {
+    const sessionSelector = document.getElementById("existed-sessions");
+    sessionSelector.replaceChildren();
 
     if (!sessionSelector) return;
 
@@ -75,6 +76,25 @@ const fillSessionAndCarSelector = (sessions) => {
         const option = document.createElement("option");
         option.value = session.title;
         option.textContent = session.title;
+        sessionSelector.append(option);
+    }
+}
+
+const fillCarSelector = (carCount) => {
+    const sessionSelector = document.getElementById("existed-cars");
+    sessionSelector.replaceChildren();
+
+    if (!sessionSelector) return;
+
+    const noneOption = document.createElement("option");
+    noneOption.value = "none";
+    noneOption.textContent = "-None-";
+    sessionSelector.append(noneOption);
+
+    for (let i = 1; i <= carCount; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = i;
         sessionSelector.append(option);
     }
 }
@@ -127,7 +147,8 @@ const updateTable = (sessions) => {
 }
 
 socket.on("recieveRaceState", (raceState) => {
-    fillSessionAndCarSelector(raceState.sessions);
+    fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
+    fillCarSelector(30);// add 30 cars
     updateTable(raceState.sessions);
 })
 
@@ -136,6 +157,7 @@ socket.on("createdSession", (response, sessions) => {
 
     if (response.success) {
         updateTable(sessions);
+        fillSessionSelector(sessions);
     }
 })
 socket.on("removedSession", (response, sessions) => {
@@ -143,6 +165,8 @@ socket.on("removedSession", (response, sessions) => {
 
     if (response.success) {
         updateTable(sessions);
+        fillSessionSelector(sessions);
+
     }
 })
 
