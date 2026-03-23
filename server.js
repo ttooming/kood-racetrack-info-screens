@@ -36,6 +36,8 @@ app.get("/race-flags", (req, response) => {
 //Service constructor
 const raceService = require("./services/raceService");
 const lapService = require("./services/lapService");
+const sessionService = require("./services/sessionService");
+const raceState = require("./state/raceState");
 
 // Incase of race state change
 io.on("connection", (socket) => {
@@ -43,6 +45,11 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log("Client disconnected");
     });
+
+    socket.on("getRaceState", () => {
+        io.emit("recieveRaceState", raceState);
+    })
+    //Flags requests
     socket.on("startRace", () => {
         raceService.startRace(io);
     });
@@ -53,8 +60,28 @@ io.on("connection", (socket) => {
         raceService.finishRace(io);
     });
 
+    //Lap requests
     socket.on("lapTracked", (carNumber) => {
         lapService.recordLap(io, carNumber);
+    });
+
+    //Session requests
+    socket.on("addSession", (sessionTitle, sessionDate) => {
+        sessionService.createSession(io, sessionTitle, sessionDate);
+    })
+    socket.on("removeSession", (sessionTitle) => {
+        sessionService.removeSession(io, sessionTitle);
+    })
+
+    //Racer requests
+    socket.on("addRacer", (sessionId, racerName, carNumber) => {
+        sessionService.addDriver(sessionId, racerName, carNumber);
+    })
+    socket.on("editRacer", (sessionId, racerName, carNumber) => {
+        sessionService.editDriver(sessionId, racerName, carNumber);
+    })
+    socket.on("removeRacer", (sessionId, racerName) => {
+        sessionService.removeDriver(sessionId, racerName);
     })
 });
 

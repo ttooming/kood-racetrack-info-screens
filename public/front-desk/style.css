@@ -1,9 +1,28 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #121212;
     color: white;
     font-family: 'Segoe UI', Arial, sans-serif;
     display: flex;
-    justify-content: center;
-    padding-top: 50px;
-    margin: 0;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.container {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.admin-panel {
+    display: flex;
+    justify-content: space-between;
+    width: 600px;
+    gap: 50px;
 }

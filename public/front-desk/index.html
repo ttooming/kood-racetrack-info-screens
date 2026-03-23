@@ -9,18 +9,42 @@
 </head>
 
 <body>
-    <div class="admin-panel">
+    <div class="container">
         <h1>Front desk</h1>
+        <br>
+        <div class="admin-panel">
+            <div class="session-controls">
+                <h2>Configure race sessions</h2>
+                <input type="text" id="session-title">
+                <input type="datetime-local" id="session-date">
+                <div class="buttons">
+                    <button class="session-button" id="add-session">Add</button>
+                    <button class="session-button" id="remove-session">Remove</button>
+                </div>
+            </div>
+            <div class="racer-controls">
+                <h2>Configure racers</h2>
+                <input type="text" id="racer-name">
+                <br>
+                <select name="cars" id="existed-cars">
+                </select>
+                <br>
+                <select name="sessions" id="existed-sessions">
+                </select>
 
-        <div id="create-session"></div>
-        <div id="remove-session"></div>
-        <div id="add-racer"></div>
-        <div id="edit-racer"></div>
-        <div id="remove-racer"></div>
+                <div class="buttons">
+                    <button class="racer-button" id="add-racer">Add</button>
+                    <button class="racer-button" id="edit-racer">Edit</button>
+                    <button class="racer-button" id="remove-racer">Remove</button>
+                </div>
+            </div>
 
-        <div id="upcoming-sessions"></div>
+        </div>
+        <div class="table" id="session-table">
+            <table id="upcoming-sessions">
+            </table>
+        </div>
     </div>
-
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
