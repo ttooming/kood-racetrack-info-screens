@@ -10,6 +10,7 @@ const loadState = require("./utils/loadState");
 //Services import
 const raceService = require("./services/raceService");
 const sessionService = require("./services/sessionService");
+const lapService = require("./services/lapService");
 const timer = require("./utils/timer");
 
 //Execution of program
@@ -89,6 +90,9 @@ io.on("connection", (socket) => {
         console.log("Session ended");
         sessionService.endSession(io);
     });
+    socket.on("lapTracked", (carNumber) => {
+        lapService.recordLap(io, carNumber);
+    })
 });
 
 server.listen(3000, () => {

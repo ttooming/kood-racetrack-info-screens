@@ -4,7 +4,7 @@ const saveState = require("../utils/saveState");
  * Records a lap crossing for a specific car.
  * Handles lap counting, lap time calculation, and fastest lap tracking.
  */
-function recordLap(carNumber) {
+function recordLap(io, carNumber) {
     const session = raceState.currentSession;
 
     // Ensure there is an active session
@@ -44,12 +44,12 @@ function recordLap(carNumber) {
         car.lastLapTimestamp = now;
     }
     saveState(raceState);
-    return {
+    io.emit("lapRecorded", {
         carNumber,
         laps: car.laps,
         fastestLap: car.fastestLap,
         lapTime
-    };
+    });
 }
 
 /**

@@ -18,8 +18,10 @@ const changeMode = (mode) => {
 document.getElementById("safe").onclick = () => changeMode("SAFE");
 document.getElementById("hazard").onclick = () => changeMode("HAZARD");
 document.getElementById("danger").onclick = () => changeMode("DANGER");
-document.getElementById("finish").onclick = () => changeMode("FINISH");
-
+document.getElementById("finish").onclick = () => {
+    socket.emit("finishRace");
+}
+    ;
 
 socket.on('raceModeChanged', (mode) => {
     modeDisplay.innerText = mode;

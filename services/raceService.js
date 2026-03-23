@@ -3,6 +3,8 @@ const validTransition = require("../raceStateMachine"); // Import state machine 
 const { startTimer } = require("../utils/timer");
 const raceState = require("../state/raceState");
 const saveState = require("../utils/saveState");
+//Server runtime considering execution syntax
+//60 seconds in dev mode, 600 seconds in normal production
 const countdown = process.env.NODE_ENV === "development" ? 60 : 600;
 
 // Every change is directed to server
@@ -28,8 +30,8 @@ function startRace(io) {
     //Selects first item
     raceState.currentSession = raceState.sessions.shift();
     saveState(raceState);
-    io.emit("raceStarted", raceState.currentSession)
-    io.emit("raceModeChanged", "SAFE")
+    io.emit("raceStarted", raceState.currentSession); //go to leader board and next race
+    io.emit("raceModeChanged", "SAFE");
 }
 
 function resumeRace(io, remainingTime) {
@@ -42,8 +44,9 @@ function resumeRace(io, remainingTime) {
 }
 
 function finishRace(io) {
-    if (raceState.raceMode === "FINISH")
+    if (raceState.raceMode === "FINISH") {
         return;
+    }
     raceState.raceMode = "FINISH";
     saveState(raceState);
     io.emit("raceModeChanged", "FINISH")

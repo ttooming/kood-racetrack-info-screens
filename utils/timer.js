@@ -15,7 +15,7 @@ function startTimer(io, countdown, onFinish) {
         saveState(raceState);
         //Timer broadcast
         console.log(remainingTime);
-        io.emit("timerUpdate", remainingTime);
+        io.emit("timerUpdate", remainingTime);//LeaderBoard
         if (remainingTime <= 0 || raceState.raceMode === "FINISH") {
             clearInterval(raceTimer);
             onFinish(); //Callback
