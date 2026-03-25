@@ -75,13 +75,13 @@ io.on("connection", (socket) => {
 
     //Racer requests
     socket.on("addRacer", (sessionId, racerName, carNumber) => {
-        sessionService.addDriver(sessionId, racerName, carNumber);
+        sessionService.addDriver(io, sessionId, racerName, carNumber);
     })
     socket.on("editRacer", (sessionId, racerName, carNumber) => {
-        sessionService.editDriver(sessionId, racerName, carNumber);
+        sessionService.editDriver(io, sessionId, racerName, carNumber);
     })
     socket.on("removeRacer", (sessionId, racerName) => {
-        sessionService.removeDriver(sessionId, racerName);
+        sessionService.removeDriver(io, sessionId, racerName);
     })
 });
 

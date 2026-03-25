@@ -74,7 +74,7 @@ const fillSessionSelector = (sessions) => {
 
     for (const session of sessions) {
         const option = document.createElement("option");
-        option.value = session.title;
+        option.value = session.id;
         option.textContent = session.title;
         sessionSelector.append(option);
     }
@@ -132,13 +132,13 @@ const updateTable = (sessions) => {
                     col.textContent = session.id;
                     break;
                 case 1:
-                    col.textContent = session.date;
+                    col.textContent = session.date.replace("T", " ");
                     break;
                 case 2:
                     col.textContent = session.title;
                     break;
                 default:
-                    col.textContent = session.drivers.join(", ");
+                    col.textContent = session.drivers.map(d => `${d.name} in car ${d.car}`).join(", ");
             }
             row.append(col);
         }
@@ -148,7 +148,7 @@ const updateTable = (sessions) => {
 
 socket.on("recieveRaceState", (raceState) => {
     fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
-    fillCarSelector(30);// add 30 cars
+    fillCarSelector(8);// add 8 cars
     updateTable(raceState.sessions);
 })
 
