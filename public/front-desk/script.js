@@ -150,6 +150,7 @@ socket.on("recieveRaceState", (raceState) => {
     fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
     fillCarSelector(8);// add 8 cars
     updateTable(raceState.sessions);
+    //check git
 })
 
 socket.on("createdSession", (response, sessions) => {
