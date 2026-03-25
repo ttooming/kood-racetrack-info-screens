@@ -1,5 +1,5 @@
 const raceState = require("../state/raceState");
-
+const saveState = require("../utils/saveState");
 /**
  * Records a lap crossing for a specific car.
  * Handles lap counting, lap time calculation, and fastest lap tracking.
@@ -61,7 +61,7 @@ function formatLapTime(ms) {
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
     const millis = ms % 1000;
-
+    saveState(raceState);
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${millis.toString().padStart(3, '0')}`;
 }
 
@@ -105,7 +105,7 @@ function getLeaderboard() {
         if (b.fastestLap === null) return -1;
         return a.fastestLap - b.fastestLap;
     });
-
+    saveState(raceState);
     return leaderboard;
 }
 

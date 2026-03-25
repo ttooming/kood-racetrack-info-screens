@@ -1,12 +1,13 @@
-//Dependency
+//Dependencies
 const validTransition = require("../raceStateMachine"); // Import state machine for control
 const { startTimer } = require("../utils/timer");
 const raceState = require("../state/raceState");
 //Server runtime considering execution syntax
 //60 seconds in dev mode, 600 seconds in normal production
+const saveState = require("../utils/saveState");
 const countdown = process.env.NODE_ENV === "development" ? 60 : 600;
 
-//"io" is our brain of operation
+// Every change is directed to server
 function changeRaceMode(io, newMode) {
     //If new mode is not allowed, make no changes
     if (!validTransition(raceState.raceMode, newMode)) {
@@ -14,16 +15,31 @@ function changeRaceMode(io, newMode) {
     }
     // Possibilities of new mode as "HAZARD" or "DANGER"
     raceState.raceMode = newMode;
+    saveState(raceState);
     io.emit("raceModeChanged", newMode);
 }
 
 function startRace(io) {
     raceState.raceMode = "SAFE";
+    //Data for loadState function
+    raceState.duration = countdown;
+
     startTimer(io, countdown, () => {
         finishRace(io);
     });
+    //Selects first item
     raceState.currentSession = raceState.sessions.shift();
-    io.emit("raceStarted", raceState.currentSession); //go to leader board and next race
+    saveState(raceState);
+    io.emit("raceStarted", raceState.currentSession)
+    io.emit("raceModeChanged", "SAFE")
+}
+
+function resumeRace(io, remainingTime) {
+    raceState.raceMode = "SAFE";
+    startTimer(io, remainingTime, () => {
+        finishRace(io);
+    });
+    saveState(raceState);
     io.emit("raceModeChanged", "SAFE");
 }
 
@@ -32,6 +48,7 @@ function finishRace(io) {
         return;
     }
     raceState.raceMode = "FINISH";
+    saveState(raceState);
     io.emit("raceModeChanged", "FINISH")
 }
 

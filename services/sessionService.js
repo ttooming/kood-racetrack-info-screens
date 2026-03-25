@@ -1,4 +1,5 @@
 const raceState = require("../state/raceState");
+const saveState = require("../utils/saveState");
 
 function addDriver(io, sessionId, name, carNumber) {
     //Finding session
@@ -10,6 +11,7 @@ function addDriver(io, sessionId, name, carNumber) {
             message: "Session doesn't exist."
         }, raceState.sessions);
 
+    //Excluding drivers having the same name
     if (session.drivers.some(d => d.name.toLowerCase() === name.toLowerCase())) {
         return io.emit("addedDriver", {
             success: false,
@@ -30,6 +32,7 @@ function addDriver(io, sessionId, name, carNumber) {
             message: "Maximum 8 drivers allowed"
         }, raceState.sessions);
     }
+    //Adding into session object
     session.drivers.push({
         name: name,
         car: Number(carNumber)
@@ -40,6 +43,7 @@ function addDriver(io, sessionId, name, carNumber) {
         fastestLap: null,
         lastLapTimestamp: null
     };
+    saveState(raceState);
     io.emit("addedDriver", {
         success: true,
         message: "Driver is added."
@@ -55,7 +59,7 @@ function editDriver(io, sessionId, newName, carNumber) {
         }, raceState.sessions);
 
     const car = session.drivers.find(d => d.car === Number(carNumber));
-    console.log(session.drivers);
+
     if (!car)
         return io.emit("editedDriver", {
             success: false,
@@ -68,8 +72,9 @@ function editDriver(io, sessionId, newName, carNumber) {
             message: "Driver with that name already exists."
         }, raceState.sessions);
     }
-
     car.name = newName;
+    saveState(raceState);
+
     io.emit("editedDriver", {
         success: true,
         message: "Driver is edited."
@@ -83,12 +88,23 @@ function removeDriver(io, sessionId, name) {
             success: false,
             message: "Session doesn't exist."
         }, raceState.sessions);
+
+    const driver = session.drivers.find(d => d.name.toLowerCase() === name.toLowerCase());
+    if (!driver)
+        return io.emit("removedDriver", {
+            success: false,
+            message: `Driver ${name} doesn't exist.`
+        }, raceState.sessions);
+
     session.drivers = session.drivers.filter(d => d.name !== name);
+    saveState(raceState);
+
     io.emit("removedDriver", {
         success: true,
         message: "Driver is removed."
     }, raceState.sessions);
 }
+
 function createSession(io, sessionTitle, sessionDate) {
     //Making object
     if (sessionTitle.trim().length < 5)
@@ -111,6 +127,9 @@ function createSession(io, sessionTitle, sessionDate) {
         cars: {}
     };
     raceState.sessions.push(session); //Adds to the array
+
+    saveState(raceState);
+
     io.emit("createdSession", {
         success: true,
         message: "Session is created."
@@ -126,16 +145,20 @@ function removeSession(io, sessionTitle) {
         }, raceState.sessions);
 
     raceState.sessions = raceState.sessions.filter(s => s.title !== sessionTitle);//remove from the array
+    saveState(raceState);
+
     io.emit("removedSession", {
         success: true,
         message: "Session is removed."
     }, raceState.sessions);
 }
-
+// 
 function endSession(io) {
     raceState.raceMode = "DANGER";
     raceState.currentSession = null;
-    io.emit("sessionEnded");//nextRace and leaderBoard
+    saveState(raceState);
+    io.emit("raceModeChanged", "DANGER");
+    io.emit("sessionEnded");
 }
 //Accessible elsewhere
 module.exports = {

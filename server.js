@@ -1,10 +1,39 @@
-const express = require("express");// webserver
+// Setting up webserver, real-time utility
+const express = require("express");
 const http = require("http");
-const { Server } = require("socket.io");//realtime connection
+const { Server } = require("socket.io");
 
+//Targets of saved raceState data
+const raceState = require("./state/raceState");
+const loadState = require("./utils/loadState");
+
+//Services import
+const raceService = require("./services/raceService");
+const lapService = require("./services/lapService");
+const sessionService = require("./services/sessionService");
+const timer = require("./utils/timer");
+
+//Execution of program
 const app = express();
 const server = http.createServer(app);// Server with express
 const io = new Server(server);// Socket + Express
+
+//Loading values to persist data after server restart
+const savedState = loadState();
+
+if (savedState) {
+    Object.assign(raceState, savedState);
+}
+if (raceState.raceMode === "SAFE") {
+    // Incase of connection loss during timer countdown
+    const remainder = raceState.timer;
+    // Decision considering remainder time
+    if (remainder > 0) {
+        timer.startTimer(io, remainder, () => raceService.finishRace(io));
+    } else {
+        raceService.finishRace(io);
+    }
+}
 
 // Express route handler
 app.use(express.static("public"));// Base directory
@@ -33,13 +62,8 @@ app.get("/race-flags", (req, response) => {
     response.sendFile(__dirname + "/public/race-flags/index.html");
 });
 
-//Service constructor
-const raceService = require("./services/raceService");
-const lapService = require("./services/lapService");
-const sessionService = require("./services/sessionService");
-const raceState = require("./state/raceState");
-
 // Incase of race state change
+// Output of server status
 io.on("connection", (socket) => {
     console.log("Client connected");
     socket.on("disconnect", () => {
@@ -50,13 +74,19 @@ io.on("connection", (socket) => {
         io.emit("recieveRaceState", raceState);
     })
     //Flags requests
+    socket.emit("raceModeChanged", raceState.raceMode);
+    socket.emit("timerUpdate", raceState.timer);
+
+    // Incase of race state change
     socket.on("startRace", () => {
+        console.log("Race started");
         raceService.startRace(io);
     });
     socket.on("changeRaceMode", (newMode) => {
         raceService.changeRaceMode(io, newMode);
     });
     socket.on("finishRace", () => {
+        console.log("Race ended");
         raceService.finishRace(io);
     });
 
@@ -72,6 +102,10 @@ io.on("connection", (socket) => {
     socket.on("removeSession", (sessionTitle) => {
         sessionService.removeSession(io, sessionTitle);
     })
+    socket.on("endSession", () => {
+        console.log("Session ended");
+        sessionService.endSession(io);
+    });
 
     //Racer requests
     socket.on("addRacer", (sessionId, racerName, carNumber) => {
