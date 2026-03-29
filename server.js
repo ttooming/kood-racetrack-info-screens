@@ -47,6 +47,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("getRaceState", () => {
+        //read the raceState from state.json
         io.emit("recieveRaceState", raceState);
     })
     //Flags requests
