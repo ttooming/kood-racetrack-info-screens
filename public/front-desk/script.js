@@ -101,8 +101,7 @@ const fillCarSelector = (carCount) => {
 
 const createTableHead = () => {
     const table = document.getElementById("upcoming-sessions");
-    const headRow = `<caption>UPCOMING SESSIONS</caption>
-                <thead>
+    const headRow = `<thead>
                     <tr>
                         <th>id</th>
                         <th>Date</th>
@@ -147,6 +146,7 @@ const updateTable = (sessions) => {
 }
 
 socket.on("recieveRaceState", (raceState) => {
+    console.log(raceState)
     fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
     fillCarSelector(8);// add 8 cars
     updateTable(raceState.sessions);

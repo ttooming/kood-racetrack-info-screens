@@ -14,11 +14,14 @@
         <br>
         <div class="admin-panel">
             <div class="session-controls">
-                <h2>Configure race sessions</h2>
-                Input the session name:
+                <h2>Configure sessions</h2>
+
+                <label for="session-title">Input the session name:</label>
                 <input type="text" id="session-title">
-                Input time:
+
+                <label for="session-date">Input time:</label>
                 <input type="datetime-local" id="session-date">
+
                 <div class="buttons">
                     <button class="session-button" id="add-session">Add</button>
                     <button class="session-button" id="remove-session">Remove</button>
@@ -26,14 +29,12 @@
             </div>
             <div class="racer-controls">
                 <h2>Configure racers</h2>
-                Input the Racer name:
+                <label for="racer-name">Input the Racer name:</label>
                 <input type="text" id="racer-name">
-                <br>
-                Choose car number:
+                <label for="existed-cars">Choose car number:</label>
                 <select name="cars" id="existed-cars">
                 </select>
-                <br>
-                Choose the session:
+                <label for="existed-sessions">Choose the session:</label>
                 <select name="sessions" id="existed-sessions">
                 </select>
 
@@ -45,10 +46,12 @@
             </div>
 
         </div>
-        <div class="table" id="session-table">
+        <div class="table-section">
             <table id="upcoming-sessions">
             </table>
         </div>
+
+
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
