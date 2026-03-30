@@ -77,6 +77,7 @@ io.on("connection", (socket) => {
     //Flags requests
     socket.emit("raceModeChanged", raceState.raceMode);
     socket.emit("timerUpdate", raceState.timer);
+    socket.emit("recieveRaceState", raceState);
 
     // Incase of race state change
     socket.on("startRace", () => {
@@ -108,15 +109,15 @@ io.on("connection", (socket) => {
         sessionService.endSession(io);
     });
 
-    //Racer requests
-    socket.on("addRacer", (sessionId, racerName, carNumber) => {
-        sessionService.addDriver(io, sessionId, racerName, carNumber);
+    //driver requests
+    socket.on("addDriver", (sessionId, driverName, carNumber) => {
+        sessionService.addDriver(io, sessionId, driverName, carNumber);
     })
-    socket.on("editRacer", (sessionId, racerName, carNumber) => {
-        sessionService.editDriver(io, sessionId, racerName, carNumber);
+    socket.on("editDriver", (sessionId, driverName, carNumber) => {
+        sessionService.editDriver(io, sessionId, driverName, carNumber);
     })
-    socket.on("removeRacer", (sessionId, racerName) => {
-        sessionService.removeDriver(io, sessionId, racerName);
+    socket.on("removeDriver", (sessionId, driverName) => {
+        sessionService.removeDriver(io, sessionId, driverName);
     })
 });
 

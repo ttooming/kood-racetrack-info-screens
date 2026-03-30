@@ -1,14 +1,6 @@
 {
-  "raceMode": "DANGER",
-  "timer": 0,
-  "currentSession": null,
-  "sessions": [
-    {
-      "id": 1,
-      "title": "kokikok",
-      "date": "2026-03-27T15:17",
-      "drivers": [],
-      "cars": {}
-    }
-  ]
+  "raceMode": "FINISH",
+  "timer": 594,
+  "sessions": [],
+  "duration": 600
 }

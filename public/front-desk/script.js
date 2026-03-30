@@ -2,7 +2,7 @@ const socket = io();
 
 socket.emit("getRaceState");
 
-//request a server for configure sessions and racers
+//request a server for configure sessions and drivers
 const addSession = (title, date) => {
     console.log("Requesting add the session:", title);
 
@@ -18,17 +18,17 @@ const removeSession = (title) => {
     socket.emit("removeSession", title);
 }
 
-const addRacer = (sessionId, racerName, carNumber) => {
-    console.log("Requesting add the racer:", racerName);
-    socket.emit("addRacer", sessionId, racerName, carNumber);
+const addDriver = (sessionId, driverName, carNumber) => {
+    console.log("Requesting add the driver:", driverName);
+    socket.emit("addDriver", sessionId, driverName, carNumber);
 }
-const editRacer = (sessionId, racerName, carNumber) => {
-    console.log("Requesting edit the racer:", racerName);
-    socket.emit("editRacer", sessionId, racerName, carNumber);
+const editDriver = (sessionId, driverName, carNumber) => {
+    console.log("Requesting edit the driver:", driverName);
+    socket.emit("editDriver", sessionId, driverName, carNumber);
 }
-const removeRacer = (sessionId, racerName) => {
-    console.log("Requesting remove the racer:", racerName);
-    socket.emit("removeRacer", sessionId, racerName);
+const removeDriver = (sessionId, driverName) => {
+    console.log("Requesting remove the driver:", driverName);
+    socket.emit("removeDriver", sessionId, driverName);
 }
 
 
@@ -42,22 +42,22 @@ document.getElementById("remove-session").onclick = () => {
     removeSession(sessionTitle);
 }
 
-document.getElementById("add-racer").onclick = () => {
-    const racerName = document.getElementById("racer-name").value;
+document.getElementById("add-driver").onclick = () => {
+    const driverName = document.getElementById("driver-name").value;
     const carNumber = document.getElementById("existed-cars").value;
     const sessionId = document.getElementById("existed-sessions").value;
-    addRacer(sessionId, racerName, carNumber);
+    addDriver(sessionId, driverName, carNumber);
 }
-document.getElementById("edit-racer").onclick = () => {
-    const racerName = document.getElementById("racer-name").value;
+document.getElementById("edit-driver").onclick = () => {
+    const driverName = document.getElementById("driver-name").value;
     const carNumber = document.getElementById("existed-cars").value;
     const sessionId = document.getElementById("existed-sessions").value;
-    editRacer(sessionId, racerName, carNumber);
+    editDriver(sessionId, driverName, carNumber);
 }
-document.getElementById("remove-racer").onclick = () => {
-    const racerName = document.getElementById("racer-name").value;
+document.getElementById("remove-driver").onclick = () => {
+    const driverName = document.getElementById("driver-name").value;
     const sessionId = document.getElementById("existed-sessions").value;
-    removeRacer(sessionId, racerName);
+    removeDriver(sessionId, driverName);
 }
 
 
@@ -106,7 +106,7 @@ const createTableHead = () => {
                         <th>id</th>
                         <th>Date</th>
                         <th>Title</th>
-                        <th>Racers</th>
+                        <th>Drivers</th>
                     </tr>
                 </thead>`;
     table.insertAdjacentHTML("beforeend", headRow);
@@ -137,7 +137,7 @@ const updateTable = (sessions) => {
                     col.textContent = session.title;
                     break;
                 default:
-                    col.textContent = session.drivers.map(d => `${d.name} in car ${d.car}`).join(", ");
+                    col.textContent = session.drivers.map(d => `${d.name} in the car ${d.car}`).join(", ");
             }
             row.append(col);
         }
