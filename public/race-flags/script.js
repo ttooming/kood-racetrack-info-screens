@@ -15,7 +15,6 @@ fullBtn.addEventListener('click', () => {
 });
 
 socket.on('raceModeChanged', (mode) => {
-    console.log("F1 Flag Update:", mode);
     
     overlay.className = '';
     
@@ -30,6 +29,3 @@ socket.on('raceModeChanged', (mode) => {
     }
 });
 
-socket.on("connect", () => {
-    console.log("F1 Flag Display Online");
-});
