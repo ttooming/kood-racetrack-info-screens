@@ -30,8 +30,8 @@ function startRace(io) {
     //Selects first item
     raceState.currentSession = raceState.sessions.shift();
     saveState(raceState);
-    io.emit("raceStarted", raceState.currentSession); //go to leader board and next race
-    io.emit("raceModeChanged", "SAFE");
+    io.emit("raceStarted", raceState.currentSession)
+    io.emit("raceModeChanged", "SAFE")
 }
 
 function resumeRace(io, remainingTime) {

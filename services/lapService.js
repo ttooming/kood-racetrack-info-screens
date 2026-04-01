@@ -9,17 +9,17 @@ function recordLap(io, carNumber) {
 
     // Ensure there is an active session
     if (!session) {
-        return { error: "No active session" };
+        return io.emit("lapRecorded", false, { error: "No active session" });
     }
 
     // Race must not be in DANGER mode (no active racing)
     if (raceState.raceMode === "DANGER") {
-        return { error: "Race not active" };
+        return io.emit("lapRecorded", false, { error: "Race not active" });
     }
 
     // Ensure the car exists in the current session
     if (!session.cars || !session.cars[carNumber]) {
-        return { error: "Unknown car" };
+        return io.emit("lapRecorded", false, { error: "Unknown car" });
     }
 
     const now = Date.now();
@@ -43,8 +43,8 @@ function recordLap(io, carNumber) {
 
         car.lastLapTimestamp = now;
     }
-    saveState(raceState);
-    io.emit("lapRecorded", {
+
+    io.emit("lapRecorded", true, {
         carNumber,
         laps: car.laps,
         fastestLap: car.fastestLap,

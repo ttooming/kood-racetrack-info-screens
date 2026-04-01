@@ -9,8 +9,8 @@ const loadState = require("./utils/loadState");
 
 //Services import
 const raceService = require("./services/raceService");
-const sessionService = require("./services/sessionService");
 const lapService = require("./services/lapService");
+const sessionService = require("./services/sessionService");
 const timer = require("./utils/timer");
 
 //Execution of program
@@ -24,15 +24,14 @@ const savedState = loadState();
 if (savedState) {
     Object.assign(raceState, savedState);
 }
-if (raceState.raceMode === "SAFE") {
-    // Incase of connection loss during timer countdown
-    const remainder = raceState.timer;
-    // Decision considering remainder time
-    if (remainder > 0) {
-        timer.startTimer(io, remainder, () => raceService.finishRace(io));
-    } else {
-        raceService.finishRace(io);
-    }
+
+// Incase of connection loss during timer countdown
+const remainder = raceState.timer;
+// Decision considering remainder time
+if (remainder > 0) {
+    timer.startTimer(io, remainder, () => raceService.finishRace(io));
+} else {
+    raceService.finishRace(io);
 }
 
 // Express route handler
@@ -62,14 +61,22 @@ app.get("/race-flags", (req, response) => {
     response.sendFile(__dirname + "/public/race-flags/index.html");
 });
 
+// Incase of race state change
 // Output of server status
 io.on("connection", (socket) => {
     console.log("Client connected");
     socket.on("disconnect", () => {
         console.log("Client disconnected");
     });
+
+    socket.on("getRaceState", () => {
+        //read the raceState from state.json
+        io.emit("recieveRaceState", raceState);
+    })
+    //Flags requests
     socket.emit("raceModeChanged", raceState.raceMode);
     socket.emit("timerUpdate", raceState.timer);
+    socket.emit("recieveRaceState", raceState);
 
     // Incase of race state change
     socket.on("startRace", () => {
@@ -77,21 +84,40 @@ io.on("connection", (socket) => {
         raceService.startRace(io);
     });
     socket.on("changeRaceMode", (newMode) => {
+        console.log("MODE:", newMode)
         raceService.changeRaceMode(io, newMode);
     });
     socket.on("finishRace", () => {
         console.log("Race ended");
         raceService.finishRace(io);
     });
-    socket.on("createSession", () => {
-        sessionService.createSession(io);
+
+    //Lap requests
+    socket.on("lapTracked", (carNumber) => {
+        lapService.recordLap(io, carNumber);
     });
+
+    //Session requests
+    socket.on("addSession", (sessionTitle, sessionDate) => {
+        sessionService.createSession(io, sessionTitle, sessionDate);
+    })
+    socket.on("removeSession", (sessionTitle) => {
+        sessionService.removeSession(io, sessionTitle);
+    })
     socket.on("endSession", () => {
         console.log("Session ended");
         sessionService.endSession(io);
     });
-    socket.on("lapTracked", (carNumber) => {
-        lapService.recordLap(io, carNumber);
+
+    //driver requests
+    socket.on("addDriver", (sessionId, driverName, carNumber) => {
+        sessionService.addDriver(io, sessionId, driverName, carNumber);
+    })
+    socket.on("editDriver", (sessionId, driverName, carNumber) => {
+        sessionService.editDriver(io, sessionId, driverName, carNumber);
+    })
+    socket.on("removeDriver", (sessionId, driverName) => {
+        sessionService.removeDriver(io, sessionId, driverName);
     })
 });
 
