@@ -107,10 +107,10 @@ function removeDriver(io, sessionId, name) {
 
 function createSession(io, sessionTitle, sessionDate) {
     //Making object
-    if (sessionTitle.trim().length < 5)
+    if (sessionTitle.trim().length < 1)
         return io.emit("createdSession", {
             success: false,
-            message: "Session title is too short (min 5 characters)."
+            message: "Session title is too short (min 1 characters)."
         }, raceState.sessions);
 
     if (new Date(sessionDate.value) < new Date()) {

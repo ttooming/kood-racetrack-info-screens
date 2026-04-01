@@ -1,0 +1,190 @@
+/* --- Üldine seadistus --- */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #080808; /* Süsimust taust */
+    color: #fff;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden; /* Keelame igasuguse kerimise */
+    user-select: none;
+}
+
+/* --- Põhikonteiner --- */
+#next-race-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 30px 50px;
+    box-sizing: border-box;
+    justify-content: space-between; /* Surub päise üles ja bänneri alla */
+}
+
+/* --- Päis (Header) --- */
+header {
+    border-bottom: 2px solid #e10600; /* F1 Punane joon */
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    flex-shrink: 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.session-label {
+    font-size: 1.1rem;
+    letter-spacing: 4px;
+    color: #666;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.timer-container {
+    text-align: right;
+}
+
+.timer-label {
+    font-size: 0.8rem;
+    color: #666;
+    display: block;
+    letter-spacing: 2px;
+    margin-bottom: -5px;
+}
+
+#session-timer {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #e10600;
+    line-height: 1;
+}
+
+h1 {
+    font-size: clamp(2rem, 5vh, 3.5rem);
+    font-weight: 800;
+    margin: 10px 0 0 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- Tabeli pealkirjad --- */
+.table-header {
+    display: flex;
+    padding: 5px 20px;
+    color: #444;
+    font-weight: bold;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.h-car { width: 110px; }
+
+/* --- Draiverite nimekiri (Dünaamiline ala) --- */
+#driver-list {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Vahe kaartide vahel */
+    justify-content: flex-start;
+    overflow: hidden;
+    padding: 5px 0;
+}
+
+/* --- Draiveri kaart (Must riba) --- */
+.driver-card {
+    display: flex;
+    align-items: center;
+    background-color: #121212; /* Tumehall nagu pildil */
+    border-radius: 6px;
+    flex: 1; /* Lubab kaardil kahaneda/kasvada vastavalt ruumile */
+    min-height: 45px;
+    max-height: 75px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Punane aktsentriba vasakul servas */
+.driver-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 15%;
+    height: 70%;
+    width: 6px;
+    background-color: #e10600;
+    border-radius: 0 4px 4px 0;
+}
+
+.car-number {
+    width: 110px;
+    padding-left: 25px;
+    font-size: clamp(1.5rem, 4vh, 2.5rem);
+    font-weight: 900;
+    color: #e10600; /* Punane number */
+    line-height: 1;
+}
+
+.driver-name {
+    font-size: clamp(1.2rem, 3.5vh, 2.3rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+/* --- Paddocki bänner (Alumine osa) --- */
+#paddock-footer {
+    margin-top: 15px;
+    flex-shrink: 0; /* Bänner ei tohi kunagi kokku tõmbuda */
+}
+
+.alert-banner {
+    background-color: #007bff;
+    color: #fff;
+    padding: 15px 20px;
+    font-size: clamp(1.5rem, 3vh, 2.2rem);
+    font-weight: 900;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0 0 30px rgba(225, 6, 0, 0.4);
+    letter-spacing: 1px;
+    animation: pulse-red 2s infinite ease-in-out;
+}
+
+/* --- Animatsioonid --- */
+@keyframes pulse-red {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(0.99); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes blink-anim {
+    50% { opacity: 0; }
+}
+
+.timer-blink {
+    animation: blink-anim 1s infinite;
+}
+
+/* --- Peidetud olek --- */
+.hidden {
+    display: none !important;
+}
+
+/* --- Jalus (Status bar) --- */
+footer {
+    margin-top: 10px;
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    color: #222;
+    text-align: center;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
