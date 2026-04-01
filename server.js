@@ -24,15 +24,14 @@ const savedState = loadState();
 if (savedState) {
     Object.assign(raceState, savedState);
 }
-if (raceState.raceMode === "SAFE") {
-    // Incase of connection loss during timer countdown
-    const remainder = raceState.timer;
-    // Decision considering remainder time
-    if (remainder > 0) {
-        timer.startTimer(io, remainder, () => raceService.finishRace(io));
-    } else {
-        raceService.finishRace(io);
-    }
+
+// Incase of connection loss during timer countdown
+const remainder = raceState.timer;
+// Decision considering remainder time
+if (remainder > 0) {
+    timer.startTimer(io, remainder, () => raceService.finishRace(io));
+} else {
+    raceService.finishRace(io);
 }
 
 // Express route handler
@@ -85,6 +84,7 @@ io.on("connection", (socket) => {
         raceService.startRace(io);
     });
     socket.on("changeRaceMode", (newMode) => {
+        console.log("MODE:", newMode)
         raceService.changeRaceMode(io, newMode);
     });
     socket.on("finishRace", () => {
