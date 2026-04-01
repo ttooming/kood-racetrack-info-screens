@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <title>F1 LIVE LEADERBOARD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="next-race-screen">
+        <header>
+            <div class="header-top">
+                <div class="session-info">
+                    <span class="session-label">LIVE TRACK DATA</span>
+                    <h1 id="race-title">RACE SESSION</h1>
+                </div>
+                <div class="timer-container">
+                    <span class="timer-label">SESSION TIME</span>
+                    <div id="race-timer">00:00</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="table-header">
+            <div class="h-pos">POS</div>
+            <div class="h-name">DRIVER</div>
+            <div class="h-car">CAR NR</div>
+            <div class="h-laps">LAPS</div>
+            <div class="h-time">LAST LAP</div>
+            <div class="h-time">BEST LAP</div>
+        </div>
+
+        <div id="leaderboard-body">
+            </div>
+
+        <div id="paddock-footer">
+            <div id="status-banner" class="alert-banner">OFF</div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

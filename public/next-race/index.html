@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Race</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="next-race-screen">
+        <header>
+            <div class="header-top">
+                <div class="session-label">UPCOMING SESSION</div>
+                <div class="timer-container">
+                    <span class="timer-label">STARTS IN</span>
+                    <div id="session-timer">10:00</div>
+                </div>
+            </div>
+            <h1 id="main-title">LOADING...</h1>
+        </header>
+
+        <div class="table-header">
+            <span class="h-car">CAR</span>
+            <span class="h-driver">DRIVER</span>
+        </div>
+
+        <main id="driver-list">
+            </main>
+
+        <div id="paddock-footer" class="hidden">
+            <div class="alert-banner">
+                PROCEED TO THE PADDOCK FOR BRIEFING
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
