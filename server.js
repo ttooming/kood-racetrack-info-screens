@@ -1,7 +1,9 @@
 // Setting up webserver, real-time utility
+require("dotenv").config();
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const ngrok = require("@ngrok/ngrok");
 
 //Targets of saved raceState data
 const raceState = require("./state/raceState");
@@ -121,6 +123,18 @@ io.on("connection", (socket) => {
     })
 });
 
-server.listen(3000, () => {
+server.listen(3000, async () => {
     console.log("Server running on port 3000");
+    // Start ngrok tunnel automatically for the demo
+    try {
+        const listener = await ngrok.forward({
+            addr: 3000,
+            authtoken: process.env.NGROK_AUTHTOKEN
+        });
+        console.log(`\n======================================================`);
+        console.log(`🚀 Public URL: ${listener.url()}`);
+        console.log(`======================================================\n`);
+    } catch (error) {
+        console.error("Failed to start ngrok tunnel:", error.message);
+    }
 });
