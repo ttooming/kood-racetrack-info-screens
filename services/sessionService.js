@@ -113,12 +113,15 @@ function createSession(io, sessionTitle, sessionDate) {
             message: "Session title is too short (min 1 characters)."
         }, raceState.sessions);
 
-    if (new Date(sessionDate.value) < new Date()) {
+    const isSession = raceState.sessions.find(s => s.title === sessionTitle && s.date === sessionDate);
+
+    if (isSession)
         return io.emit("createdSession", {
             success: false,
-            message: "Session can't be in past!"
+            message: "Session with that title and date already exists."
         }, raceState.sessions);
-    }
+
+
     const session = {
         id: raceState.sessions.length + 1,
         title: sessionTitle,
@@ -136,8 +139,8 @@ function createSession(io, sessionTitle, sessionDate) {
     }, raceState.sessions);
 }
 
-function removeSession(io, sessionTitle) {
-    const session = raceState.sessions.find(s => s.title === sessionTitle);
+function removeSession(io, sessionTitle, sessionDate) {
+    const session = raceState.sessions.find(s => s.title === sessionTitle && s.date === sessionDate);
     if (!session)
         return io.emit("removedSession", {
             success: false,

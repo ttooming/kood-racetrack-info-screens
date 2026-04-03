@@ -6,16 +6,16 @@ socket.emit("getRaceState");
 const addSession = (title, date) => {
     console.log("Requesting add the session:", title);
 
-    if (new Date(date.value) < new Date()) {
+    if (new Date(date) < new Date()) {
         alert("Session can't be in past!");
         return;
     }
 
     socket.emit("addSession", title, date);
 }
-const removeSession = (title) => {
+const removeSession = (title, date) => {
     console.log("Requesting remove the session:", title);
-    socket.emit("removeSession", title);
+    socket.emit("removeSession", title, date);
 }
 
 const addDriver = (sessionId, driverName, carNumber) => {
@@ -39,7 +39,8 @@ document.getElementById("add-session").onclick = () => {
 }
 document.getElementById("remove-session").onclick = () => {
     const sessionTitle = document.getElementById("session-title").value;
-    removeSession(sessionTitle);
+    const sessionDate = document.getElementById("session-date").value;
+    removeSession(sessionTitle, sessionDate);
 }
 
 document.getElementById("add-driver").onclick = () => {
@@ -103,8 +104,8 @@ const createTableHead = () => {
     const table = document.getElementById("upcoming-sessions");
     const headRow = `<thead>
                     <tr>
-                        <th>id</th>
                         <th>Date</th>
+                        <th>Time</th>
                         <th>Title</th>
                         <th>Drivers</th>
                     </tr>
@@ -120,6 +121,7 @@ const updateTable = (sessions) => {
 
     const tableBody = document.createElement("tbody");
     table.append(tableBody);
+    sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     for (const session of sessions) {
         const row = document.createElement("tr");
@@ -128,10 +130,10 @@ const updateTable = (sessions) => {
             const col = document.createElement("td");
             switch (i) {
                 case 0:
-                    col.textContent = session.id;
+                    col.textContent = session.date.split("T")[0];
                     break;
                 case 1:
-                    col.textContent = session.date.replace("T", " ");
+                    col.textContent = session.date.split("T")[1];
                     break;
                 case 2:
                     col.textContent = session.title;
@@ -159,15 +161,18 @@ socket.on("createdSession", (response, sessions) => {
     if (response.success) {
         updateTable(sessions);
         fillSessionSelector(sessions);
+    } else {
+        alert(response.message);
     }
 })
 socket.on("removedSession", (response, sessions) => {
-    console.log(response.message);
 
     if (response.success) {
         updateTable(sessions);
         fillSessionSelector(sessions);
 
+    } else {
+        alert(response.message);
     }
 })
 
@@ -176,6 +181,8 @@ socket.on("addedDriver", (response, sessions) => {
 
     if (response.success) {
         updateTable(sessions);
+    } else {
+        alert(response.message);
     }
 })
 socket.on("editedDriver", (response, sessions) => {
@@ -183,13 +190,18 @@ socket.on("editedDriver", (response, sessions) => {
 
     if (response.success) {
         updateTable(sessions);
+    } else {
+        alert(response.message);
     }
+
 })
 socket.on("removedDriver", (response, sessions) => {
     console.log(response.message);
 
     if (response.success) {
         updateTable(sessions);
+    } else {
+        alert(response.message);
     }
 })
 

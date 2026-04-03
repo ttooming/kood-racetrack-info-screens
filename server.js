@@ -101,8 +101,8 @@ io.on("connection", (socket) => {
     socket.on("addSession", (sessionTitle, sessionDate) => {
         sessionService.createSession(io, sessionTitle, sessionDate);
     })
-    socket.on("removeSession", (sessionTitle) => {
-        sessionService.removeSession(io, sessionTitle);
+    socket.on("removeSession", (sessionTitle, sessionDate) => {
+        sessionService.removeSession(io, sessionTitle, sessionDate);
     })
     socket.on("endSession", () => {
         console.log("Session ended");
