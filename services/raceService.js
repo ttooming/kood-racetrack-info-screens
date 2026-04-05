@@ -1,6 +1,6 @@
 //Dependencies
 const validTransition = require("../raceStateMachine"); // Import state machine for control
-const { startTimer } = require("../utils/timer");
+const { startTimer, stopTimer } = require("../utils/timer");
 const raceState = require("../state/raceState");
 const saveState = require("../utils/saveState");
 //Server runtime considering execution syntax
@@ -20,6 +20,8 @@ function changeRaceMode(io, newMode) {
 }
 
 function startRace(io) {
+    // Eliminating duplicate timer
+    stopTimer();
     raceState.raceMode = "SAFE";
     //Data for loadState function
     raceState.duration = countdown;
@@ -35,12 +37,13 @@ function startRace(io) {
 }
 
 function resumeRace(io, remainingTime) {
+    stopTimer();
     raceState.raceMode = "SAFE";
     startTimer(io, remainingTime, () => {
         finishRace(io);
     });
     saveState(raceState);
-    io.emit("raceModeChanged", "SAFE");
+    io.emit("raceModeChanged", raceState.raceMode);
 }
 
 function finishRace(io) {
@@ -48,8 +51,11 @@ function finishRace(io) {
         return;
     }
     raceState.raceMode = "FINISH";
+    // 00:00 in all cases
+    raceState.timer = 0;
     saveState(raceState);
-    io.emit("raceModeChanged", "FINISH")
+    io.emit("raceModeChanged", "FINISH");
+    io.emit("timerUpdate", 0);
 }
 
 //Accessible elsewhere
