@@ -144,11 +144,9 @@ const updateTable = (sessions) => {
             row.append(col);
         }
     }
-    console.log("Table is updated.")
 }
 
 socket.on("recieveRaceState", (raceState) => {
-    console.log(raceState)
     fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
     fillCarSelector(8);// add 8 cars
     updateTable(raceState.sessions);
