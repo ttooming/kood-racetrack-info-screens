@@ -19,6 +19,13 @@ function addDriver(io, sessionId, name, carNumber) {
         }, raceState.sessions);
     }
 
+    //checking if name is not empty
+    if (name.trim().length < 1)
+        return io.emit("addedDriver", {
+            success: false,
+            message: "Driver name is too short (min 1 characters)."
+        }, raceState.sessions);
+
     if (session.drivers.some(d => d.car === Number(carNumber))) {
         return io.emit("addedDriver", {
             success: false,
@@ -37,12 +44,17 @@ function addDriver(io, sessionId, name, carNumber) {
         name: name,
         car: Number(carNumber)
     });
+
+    //Sort drivers by car number
+    session.drivers.sort((a, b) => a.car - b.car);
+
     //Car tracking
     session.cars[carNumber] = {
         laps: 0,
         fastestLap: null,
         lastLapTimestamp: null
     };
+
     saveState(raceState);
     io.emit("addedDriver", {
         success: true,

@@ -65,18 +65,23 @@ app.get("/race-flags", (req, response) => {
 // Output of server status
 io.on("connection", (socket) => {
     console.log("Client connected");
+
+    const stateInterval = setInterval(() => {
+        io.emit("recieveRaceState", raceState);
+    }, 1000);
+
     socket.on("disconnect", () => {
         console.log("Client disconnected");
+        clearInterval(stateInterval);
     });
 
-    socket.on("getRaceState", () => {
+    /*socket.on("getRaceState", () => {
         //read the raceState from state.json
         io.emit("recieveRaceState", raceState);
-    })
+    })*/
     //Flags requests
     socket.emit("raceModeChanged", raceState.raceMode);
     socket.emit("timerUpdate", raceState.timer);
-    socket.emit("recieveRaceState", raceState);
 
     // Incase of race state change
     socket.on("startRace", () => {
