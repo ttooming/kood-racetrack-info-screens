@@ -1,6 +1,6 @@
 {
-  "raceMode": "DANGER",
-  "timer": 586,
+  "raceMode": "SAFE",
+  "timer": 365,
   "currentSession": null,
   "sessions": [],
   "duration": 600

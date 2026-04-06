@@ -54,7 +54,7 @@ function recordLap(io, carNumber) {
     saveState(raceState);
 
     // Teavitame kõiki liideseid (Leaderboard, Tracker jne) uuest seisust
-    io.emit("recieveRaceState", raceState);
+    //io.emit("recieveRaceState", raceState);
 
     // Lisaks saadame spetsiifilise sündmuse (vajadusel teiste moodulite jaoks)
     io.emit("lapRecorded", true, {
