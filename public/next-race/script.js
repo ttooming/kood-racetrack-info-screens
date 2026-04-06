@@ -27,7 +27,6 @@ socket.on("timerUpdate", (seconds) => {
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         sessionTimer.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-
         // Vilkumine, kui aeg on läbi
         seconds <= 0 ? sessionTimer.classList.add('timer-blink') : sessionTimer.classList.remove('timer-blink');
     }
@@ -61,7 +60,6 @@ function updateDriverList(state) {
         if (nextGroup.drivers && nextGroup.drivers.length > 0) {
             nextGroup.drivers.forEach(driver => {
                 const carNum = driver.car || "-";
-
                 // Loome uue musta kaardi (div), mitte tabeli rea
                 const card = `
                     <div class="driver-card">

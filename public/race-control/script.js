@@ -110,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Uuendame andmed kohalikes muutujates
         activeDrivers = state.currentSession ? state.currentSession.drivers : [];
         nextDrivers = (state.sessions && state.sessions.length > 0) ? state.sessions[0].drivers : [];
-
         // Kui pop-up on lahti, värskendame selle sisu reaalajas
         if (!modal.classList.contains('hidden')) {
             const currentView = modalTitle.innerText.includes("ON TRACK") ? 'current' : 'next';
