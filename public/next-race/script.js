@@ -27,7 +27,7 @@ socket.on("timerUpdate", (seconds) => {
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         sessionTimer.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        
+
         // Vilkumine, kui aeg on läbi
         seconds <= 0 ? sessionTimer.classList.add('timer-blink') : sessionTimer.classList.remove('timer-blink');
     }
@@ -38,7 +38,7 @@ socket.on("timerUpdate", (seconds) => {
  */
 socket.on("raceStarted", () => {
     paddockFooter.classList.add('hidden'); // Uus sõit algas, peidame bänneri
-    socket.emit("getRaceState"); // Uuendame kohe nimekirja järgmise grupi jaoks
+    //socket.emit("getRaceState"); // Uuendame kohe nimekirja järgmise grupi jaoks
 });
 
 socket.on("sessionEnded", () => {
@@ -61,7 +61,7 @@ function updateDriverList(state) {
         if (nextGroup.drivers && nextGroup.drivers.length > 0) {
             nextGroup.drivers.forEach(driver => {
                 const carNum = driver.car || "-";
-                
+
                 // Loome uue musta kaardi (div), mitte tabeli rea
                 const card = `
                     <div class="driver-card">
@@ -80,7 +80,7 @@ function updateDriverList(state) {
 }
 
 // Küsime andmeid kohe lehe avamisel
-socket.emit("getRaceState");
+//socket.emit("getRaceState");
 
 socket.on("connect", () => {
     console.log("Next Race F1 Display Online");

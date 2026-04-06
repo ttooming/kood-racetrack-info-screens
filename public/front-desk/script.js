@@ -1,6 +1,6 @@
 const socket = io();
 
-socket.emit("getRaceState");
+//socket.emit("getRaceState");
 
 //request a server for configure sessions and drivers
 const addSession = (title, date) => {

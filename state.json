@@ -1,40 +1,7 @@
 {
   "raceMode": "DANGER",
-  "timer": 598,
+  "timer": 586,
   "currentSession": null,
-  "sessions": [
-    {
-      "id": 2,
-      "title": "formula12",
-      "date": "2026-03-31T20:30",
-      "drivers": [
-        {
-          "name": "Maarika",
-          "car": 2
-        }
-      ],
-      "cars": {
-        "2": {
-          "laps": 0,
-          "fastestLap": null,
-          "lastLapTimestamp": null
-        }
-      }
-    },
-    {
-      "id": 2,
-      "title": "formula 12",
-      "date": "2026-04-10T15:56",
-      "drivers": [],
-      "cars": {}
-    },
-    {
-      "id": 3,
-      "title": "formula 12",
-      "date": "2026-04-09T15:56",
-      "drivers": [],
-      "cars": {}
-    }
-  ],
+  "sessions": [],
   "duration": 600
 }
