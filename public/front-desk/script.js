@@ -35,12 +35,14 @@ const removeDriver = (sessionId, driverName) => {
 document.getElementById("add-session").onclick = () => {
     const sessionTitle = document.getElementById("session-title").value;
     const sessionDate = document.getElementById("session-date").value;
-    addSession(sessionTitle, sessionDate);
+    const sessionTime = document.getElementById("session-time").value;
+    addSession(sessionTitle, sessionDate + "T" + sessionTime);
 }
 document.getElementById("remove-session").onclick = () => {
     const sessionTitle = document.getElementById("session-title").value;
     const sessionDate = document.getElementById("session-date").value;
-    removeSession(sessionTitle, sessionDate);
+    const sessionTime = document.getElementById("session-time").value;
+    removeSession(sessionTitle, sessionDate + "T" + sessionTime);
 }
 
 document.getElementById("add-driver").onclick = () => {
