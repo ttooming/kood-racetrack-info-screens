@@ -29,25 +29,30 @@ function recordLap(io, carNumber) {
     let lapTime = null;
 
     // --- ALIIS MUUTIS RINGIAJA LOOGIKAT---
-    if (car.lastLapTimestamp === null) {
-        // ESIMENE ÜLETUS: Fikseerime 0-punkti. Ringide arv jääb 0.
-        car.laps = 0;
-        car.lastLapTimestamp = now;
-        console.log(`Auto ${carNumber}: Sõit algas (0-punkt fikseeritud)`);
+
+    if (raceState.raceMode === "FINISH") {
+        console.log(`Auto ${carNumber} lõpetas võistluse!`);
     } else {
-        // JÄRGMISED ÜLETUSED: Arvutame ringiaja eelmisest ületusest
-        lapTime = now - car.lastLapTimestamp;
-        car.laps += 1;
+        if (car.lastLapTimestamp === null) {
+            // ESIMENE ÜLETUS: Fikseerime 0-punkti. Ringide arv jääb 0.
+            car.laps = 0;
+            car.lastLapTimestamp = now;
+            console.log(`Auto ${carNumber}: Sõit algas (0-punkt fikseeritud)`);
+        } else {
+            // JÄRGMISED ÜLETUSED: Arvutame ringiaja eelmisest ületusest
+            lapTime = now - car.lastLapTimestamp;
+            car.laps += 1;
 
-        // Kontrollime, kas on uus kiireim ring (Fastest Lap)
-        if (car.fastestLap === null || lapTime < car.fastestLap) {
-            car.fastestLap = lapTime;
+            // Kontrollime, kas on uus kiireim ring (Fastest Lap)
+            if (car.fastestLap === null || lapTime < car.fastestLap) {
+                car.fastestLap = lapTime;
+            }
+
+            // Uuendame viimast märget järgmise ringi jaoks
+            car.lastLapTimestamp = now;
+            car.lastLapTime = lapTime; // Salvestame ka viimase ringi aja
+            console.log(`Auto ${carNumber}: Ring ${car.laps} läbitud ajaga ${lapTime}ms`);
         }
-
-        // Uuendame viimast märget järgmise ringi jaoks
-        car.lastLapTimestamp = now;
-        car.lastLapTime = lapTime; // Salvestame ka viimase ringi aja
-        console.log(`Auto ${carNumber}: Ring ${car.laps} läbitud ajaga ${lapTime}ms`);
     }
 
     // Salvestame muudatused faili (state.json)
