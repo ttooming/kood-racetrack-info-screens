@@ -51,4 +51,4 @@ function stopTimer() {
     }
 }
 
-module.exports = { startTimer, stopTimer }; 
+module.exports = { startTimer, stopTimer };

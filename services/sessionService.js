@@ -19,6 +19,13 @@ function addDriver(io, sessionId, name, carNumber) {
         }, raceState.sessions);
     }
 
+    //checking if name is not empty
+    if (name.trim().length < 1)
+        return io.emit("addedDriver", {
+            success: false,
+            message: "Driver name is too short (min 1 characters)."
+        }, raceState.sessions);
+
     if (session.drivers.some(d => d.car === Number(carNumber))) {
         return io.emit("addedDriver", {
             success: false,
@@ -37,12 +44,17 @@ function addDriver(io, sessionId, name, carNumber) {
         name: name,
         car: Number(carNumber)
     });
+
+    //Sort drivers by car number
+    session.drivers.sort((a, b) => a.car - b.car);
+
     //Car tracking
     session.cars[carNumber] = {
         laps: 0,
         fastestLap: null,
         lastLapTimestamp: null
     };
+
     saveState(raceState);
     io.emit("addedDriver", {
         success: true,
@@ -107,18 +119,21 @@ function removeDriver(io, sessionId, name) {
 
 function createSession(io, sessionTitle, sessionDate) {
     //Making object
-    if (sessionTitle.trim().length < 5)
+    if (sessionTitle.trim().length < 1)
         return io.emit("createdSession", {
             success: false,
-            message: "Session title is too short (min 5 characters)."
+            message: "Session title is too short (min 1 characters)."
         }, raceState.sessions);
 
-    if (new Date(sessionDate.value) < new Date()) {
+    const isSession = raceState.sessions.find(s => s.title === sessionTitle && s.date === sessionDate);
+
+    if (isSession)
         return io.emit("createdSession", {
             success: false,
-            message: "Session can't be in past!"
+            message: "Session with that title and date already exists."
         }, raceState.sessions);
-    }
+
+
     const session = {
         id: raceState.sessions.length + 1,
         title: sessionTitle,
@@ -136,8 +151,8 @@ function createSession(io, sessionTitle, sessionDate) {
     }, raceState.sessions);
 }
 
-function removeSession(io, sessionTitle) {
-    const session = raceState.sessions.find(s => s.title === sessionTitle);
+function removeSession(io, sessionTitle, sessionDate) {
+    const session = raceState.sessions.find(s => s.title === sessionTitle && s.date === sessionDate);
     if (!session)
         return io.emit("removedSession", {
             success: false,

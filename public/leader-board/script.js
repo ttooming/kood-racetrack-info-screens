@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const secs = Math.floor(Math.abs(seconds) % 60);
             const prefix = seconds < 0 ? "-" : "";
             timerDisplay.innerText = `${prefix}${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            
             // Kui aeg on läbi, paneb taimeri vilkuma
             if (seconds <= 0) {
                 timerDisplay.classList.add('timer-blink');
@@ -56,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Sessioon on lõppenud. Säilitame vana nimekirja, aga bänner on uuendatud.");
             // Valikuliselt võid siin muuta pealkirja, et viidata lõpptulemustele:
             // raceTitle.innerText = "FINAL STANDINGS"; 
-            return; 
+            return;
         }
 
         // 3. KUI SESSIOON ON AKTIIVNE, JOONISTAME TABELI ÜMBER
@@ -107,13 +106,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     socket.on("raceModeChanged", (newMode) => {
         console.log("Režiim muutus:", newMode);
-        socket.emit("getRaceState"); // Küsime värske seisundi, et bänner kohe uueneks
+        //socket.emit("getRaceState"); // Küsime värske seisundi, et bänner kohe uueneks
     });
 
     socket.on("lapRecorded", () => {
-        socket.emit("getRaceState");
+        //socket.emit("getRaceState");
     });
 
     // Küsime algseisu kohe lehe laadimisel
-    socket.emit("getRaceState");
+    //socket.emit("getRaceState");
 });

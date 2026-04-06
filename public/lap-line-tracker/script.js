@@ -8,16 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentMode = "OFF";
     let drivers = [];
-    let finishedCars = new Set(); 
+    let finishedCars = new Set();
 
     // --- ANDMETE VASTUVÕTMINE ---
     socket.on("recieveRaceState", (state) => {
         console.log("State kätte saadud:", state);
-        
+
         if (state.currentSession) {
             sessionTitle.innerText = state.currentSession.title || "RACE";
             drivers = [...state.currentSession.drivers].sort((a, b) => a.car - b.car);
-            
+
             if (state.raceMode !== 'OFF') {
                 renderButtons();
             }
@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.className = 'lap-btn';
             btn.innerText = driver.car;
             btn.id = `btn-car-${driver.car}`;
-            
             btn.onclick = () => {
                 if (btn.disabled) return;
                 btn.classList.add('btn-active-flash');
@@ -71,20 +70,19 @@ document.addEventListener("DOMContentLoaded", () => {
         statusBanner.innerText = currentMode;
         statusBanner.className = "";
         statusBanner.classList.add(`status-${currentMode.toLowerCase()}`);
-        
         const allButtons = document.querySelectorAll('.lap-btn');
 
         if (currentMode === 'SAFE' || currentMode === 'HAZARD') {
             finishMessage.classList.add('hidden');
             allButtons.forEach(btn => btn.disabled = false);
-        } 
-      else if (currentMode === 'DANGER') {
-        allButtons.forEach(btn => btn.disabled = true);
-    } 
-    else if (currentMode === 'OFF') {
-        // OFF režiimis on bänner nüüd sinine (#007bff) tänu CSS-ile
-        allButtons.forEach(btn => btn.disabled = true);
-    }
+        }
+        else if (currentMode === 'DANGER') {
+            allButtons.forEach(btn => btn.disabled = true);
+        }
+        else if (currentMode === 'OFF') {
+            // OFF režiimis on bänner nüüd sinine (#007bff) tänu CSS-ile
+            allButtons.forEach(btn => btn.disabled = true);
+        }
         else if (currentMode === 'FINISH') {
             finishMessage.classList.add('hidden');
             allButtons.forEach(btn => {
@@ -95,12 +93,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     socket.on('sessionEnded', () => {
-        grid.innerHTML = ""; 
+        grid.innerHTML = "";
         finishedCars.clear();
         finishMessage.classList.remove('hidden');
         currentMode = "OFF";
         updateUIByMode();
     });
 
-    socket.emit("getRaceState");
+    //socket.emit("getRaceState");
 });
