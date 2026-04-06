@@ -75,10 +75,11 @@ io.on("connection", (socket) => {
         clearInterval(stateInterval);
     });
 
-    /*socket.on("getRaceState", () => {
+    //tagastan selleks et tabel oleks kohe nähtav kui leht laetakse
+    socket.on("getRaceState", () => {
         //read the raceState from state.json
         io.emit("recieveRaceState", raceState);
-    })*/
+    });
     //Flags requests
     socket.emit("raceModeChanged", raceState.raceMode);
     socket.emit("timerUpdate", raceState.timer);
