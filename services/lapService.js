@@ -57,7 +57,7 @@ function recordLap(io, carNumber) {
     io.emit("recieveRaceState", raceState);
 
     // Lisaks saadame spetsiifilise sündmuse (vajadusel teiste moodulite jaoks)
-    io.emit("lapRecorded", true, {
+    io.emit("lapRecorded", {
         carNumber,
         laps: car.laps,
         fastestLap: car.fastestLap,
