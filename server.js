@@ -76,9 +76,10 @@ io.on("connection", (socket) => {
     });
 
     //tagastan selleks et tabel oleks kohe nähtav kui leht laetakse
+    //kasutatakse kui andmed on vaja saata 1 kord.
     socket.on("getRaceState", () => {
         //read the raceState from state.json
-        io.emit("recieveRaceState", raceState);
+        io.emit("sendedRaceState", raceState);
     });
     //Flags requests
     socket.emit("raceModeChanged", raceState.raceMode);

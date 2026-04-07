@@ -10,6 +10,16 @@ const addSession = (title, date) => {
         alert("Session can't be in past!");
         return;
     }
+    if (date.trim().length === 1) {
+        alert("Please select date and time for the session!");
+        return;
+    } else if (date.at(-1) === "T") {
+        alert("Please select time for the session!");
+        return;
+    } else if (date.at(0) === "T") {
+        alert("Please select date for the session!");
+        return;
+    }
 
     socket.emit("addSession", title, date);
 }
@@ -20,6 +30,19 @@ const removeSession = (title, date) => {
 
 const addDriver = (sessionId, driverName, carNumber) => {
     console.log("Requesting add the driver:", driverName);
+
+    if (carNumber === "none" && sessionId === "none") {
+        alert("Please select session and car number for the driver!");
+        return;
+    }
+    if (carNumber === "none") {
+        alert("Please select the car number for the driver!");
+        return;
+    }
+    if (sessionId === "none") {
+        alert("Please select the session for the driver!");
+        return;
+    }
     socket.emit("addDriver", sessionId, driverName, carNumber);
 }
 const editDriver = (sessionId, driverName, carNumber) => {
@@ -148,12 +171,18 @@ const updateTable = (sessions) => {
     }
 }
 
+//iga sekund uuendan nimekirja, et näidata reaalajas andmeid
 socket.on("recieveRaceState", (raceState) => {
-    fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
-    fillCarSelector(8);// add 8 cars
     updateTable(raceState.sessions);
     //check git
 })
+
+socket.on("sendedRaceState", (raceState) => {
+    updateTable(raceState.sessions);
+    fillCarSelector(8);// add 8 cars
+    fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
+});
+
 
 socket.on("createdSession", (response, sessions) => {
     console.log(response.message);
