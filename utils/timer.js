@@ -1,13 +1,19 @@
 //Race state objects
 const raceState = require("../state/raceState");
 const saveState = require("../utils/saveState");
+let raceTimer = null;
+
 function startTimer(io, countdown, onFinish) {
-    //Timer runtime considering server execution syntax
-    let remainingTime = countdown;
+    // If there is previous session to be continued, allow that timer.
+    if (raceTimer) {
+        return;
+    }
+    //Timer runtime considering elapsed or not elapsed timer
+    let remainingTime = countdown ?? raceState.timer;
     raceState.timer = remainingTime;
     let finished = false;
     //Timer loop after every second
-    const raceTimer = setInterval(() => { //Node.js built-in feature setInterval(function, milliseconds)
+    raceTimer = setInterval(() => { //Node.js built-in feature setInterval(function, milliseconds)
         if (finished) return;
         // Hold during DANGER
         if (raceState.raceMode === "DANGER") {
@@ -17,6 +23,8 @@ function startTimer(io, countdown, onFinish) {
         // Incase of button press
         if (raceState.raceMode === "FINISH") {
             clearInterval(raceTimer);
+            raceTimer = null;
+            io.emit("timerUpdate", 0);
             return;
         }
         raceState.timer = remainingTime;
@@ -28,10 +36,19 @@ function startTimer(io, countdown, onFinish) {
             finished = true;
             console.log("Race ended");
             clearInterval(raceTimer);
+            raceTimer = null;
             onFinish(); //Callback to finishRace
             return;
         }
     }, 1000);
 }
 
-module.exports = { startTimer }; 
+function stopTimer() {
+    // If previous timer already exists
+    if (raceTimer) {
+        clearInterval(raceTimer);
+        raceTimer = null;
+    }
+}
+
+module.exports = { startTimer, stopTimer }; 

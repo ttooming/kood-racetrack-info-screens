@@ -67,18 +67,25 @@ app.get("/race-flags", (req, response) => {
 // Output of server status
 io.on("connection", (socket) => {
     console.log("Client connected");
+
+    const stateInterval = setInterval(() => {
+        io.emit("recieveRaceState", raceState);
+    }, 1000);
+
     socket.on("disconnect", () => {
         console.log("Client disconnected");
+        clearInterval(stateInterval);
     });
 
+    //tagastan selleks et tabel oleks kohe nähtav kui leht laetakse
+    //kasutatakse kui andmed on vaja saata 1 kord.
     socket.on("getRaceState", () => {
         //read the raceState from state.json
-        io.emit("recieveRaceState", raceState);
-    })
+        io.emit("sendedRaceState", raceState);
+    });
     //Flags requests
     socket.emit("raceModeChanged", raceState.raceMode);
     socket.emit("timerUpdate", raceState.timer);
-    socket.emit("recieveRaceState", raceState);
 
     // Incase of race state change
     socket.on("startRace", () => {
@@ -103,8 +110,8 @@ io.on("connection", (socket) => {
     socket.on("addSession", (sessionTitle, sessionDate) => {
         sessionService.createSession(io, sessionTitle, sessionDate);
     })
-    socket.on("removeSession", (sessionTitle) => {
-        sessionService.removeSession(io, sessionTitle);
+    socket.on("removeSession", (sessionTitle, sessionDate) => {
+        sessionService.removeSession(io, sessionTitle, sessionDate);
     })
     socket.on("endSession", () => {
         console.log("Session ended");

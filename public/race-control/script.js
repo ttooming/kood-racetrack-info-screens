@@ -39,10 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Funktsioon, mis joonistab nimekirja pop-up aknasse
-  const renderModalList = (type) => {
+    const renderModalList = (type) => {
         modalList.innerHTML = "";
         let drivers = (type === 'current') ? activeDrivers : nextDrivers;
-        
+
         if (type === 'current' && drivers.length === 0 && nextDrivers.length > 0) {
             drivers = nextDrivers;
             modalTitle.innerText = "NEXT SESSION (READY TO START)";
@@ -82,9 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (mode === 'FINISH') {
             startBtn.disabled = true;
-            endBtn.disabled = false; 
+            endBtn.disabled = false;
             setFlagsDisabled(true);
-        } 
+        }
         else if (mode === 'DANGER' || mode === 'OFF') {
             if (!isSessionActive) {
                 startBtn.disabled = false;
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 endBtn.disabled = true;
                 setFlagsDisabled(false);
             }
-        } 
+        }
         else if (mode === 'SAFE' || mode === 'HAZARD') {
             isSessionActive = true;
             startBtn.disabled = true;
@@ -110,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Uuendame andmed kohalikes muutujates
         activeDrivers = state.currentSession ? state.currentSession.drivers : [];
         nextDrivers = (state.sessions && state.sessions.length > 0) ? state.sessions[0].drivers : [];
-        
         // Kui pop-up on lahti, värskendame selle sisu reaalajas
         if (!modal.classList.contains('hidden')) {
             const currentView = modalTitle.innerText.includes("ON TRACK") ? 'current' : 'next';
@@ -125,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     socket.on('sessionEnded', () => {
         isSessionActive = false;
         // Me ei tee reload(), vaid küsime lihtsalt uued andmed
-        socket.emit("getRaceState"); 
+        //socket.emit("getRaceState"); 
     });
 
     // --- NUPPUDE VAJUTUSED ---
@@ -133,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
     viewDriversBtn.onclick = () => showDriverModal('current');
 
     startBtn.onclick = () => {
-        isSessionActive = true; 
+        isSessionActive = true;
         socket.emit("startRace");
     };
 
@@ -155,26 +154,26 @@ document.addEventListener("DOMContentLoaded", () => {
     confirmBtn.onclick = () => modal.classList.add('hidden');
 
     // KÜSIME ANDMEID ALGUSES
-    socket.emit("getRaceState");
+    //socket.emit("getRaceState");
 
     // Leia element lehe laadimisel
-const timerDisplay = document.getElementById('race-timer');
+    const timerDisplay = document.getElementById('race-timer');
 
-// Taimeri uuendamise kuulaja
-socket.on("timerUpdate", (seconds) => {
-    if (seconds !== undefined && timerDisplay) {
-        const mins = Math.floor(Math.abs(seconds) / 60);
-        const secs = Math.floor(Math.abs(seconds) % 60);
-        const prefix = seconds < 0 ? "-" : "";
-        
-        timerDisplay.innerText = `${prefix}${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        
-        // Kui aeg on 0 või miinuses, pane see vilkuma
-        if (seconds <= 0) {
-            timerDisplay.classList.add('timer-blink');
-        } else {
-            timerDisplay.classList.remove('timer-blink');
+    // Taimeri uuendamise kuulaja
+    socket.on("timerUpdate", (seconds) => {
+        if (seconds !== undefined && timerDisplay) {
+            const mins = Math.floor(Math.abs(seconds) / 60);
+            const secs = Math.floor(Math.abs(seconds) % 60);
+            const prefix = seconds < 0 ? "-" : "";
+
+            timerDisplay.innerText = `${prefix}${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+            // Kui aeg on 0 või miinuses, pane see vilkuma
+            if (seconds <= 0) {
+                timerDisplay.classList.add('timer-blink');
+            } else {
+                timerDisplay.classList.remove('timer-blink');
+            }
         }
-    }
-});
+    });
 });

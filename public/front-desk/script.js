@@ -6,20 +6,43 @@ socket.emit("getRaceState");
 const addSession = (title, date) => {
     console.log("Requesting add the session:", title);
 
-    if (new Date(date.value) < new Date()) {
+    if (new Date(date) < new Date()) {
         alert("Session can't be in past!");
+        return;
+    }
+    if (date.trim().length === 1) {
+        alert("Please select date and time for the session!");
+        return;
+    } else if (date.at(-1) === "T") {
+        alert("Please select time for the session!");
+        return;
+    } else if (date.at(0) === "T") {
+        alert("Please select date for the session!");
         return;
     }
 
     socket.emit("addSession", title, date);
 }
-const removeSession = (title) => {
+const removeSession = (title, date) => {
     console.log("Requesting remove the session:", title);
-    socket.emit("removeSession", title);
+    socket.emit("removeSession", title, date);
 }
 
 const addDriver = (sessionId, driverName, carNumber) => {
     console.log("Requesting add the driver:", driverName);
+
+    if (carNumber === "none" && sessionId === "none") {
+        alert("Please select session and car number for the driver!");
+        return;
+    }
+    if (carNumber === "none") {
+        alert("Please select the car number for the driver!");
+        return;
+    }
+    if (sessionId === "none") {
+        alert("Please select the session for the driver!");
+        return;
+    }
     socket.emit("addDriver", sessionId, driverName, carNumber);
 }
 const editDriver = (sessionId, driverName, carNumber) => {
@@ -35,11 +58,14 @@ const removeDriver = (sessionId, driverName) => {
 document.getElementById("add-session").onclick = () => {
     const sessionTitle = document.getElementById("session-title").value;
     const sessionDate = document.getElementById("session-date").value;
-    addSession(sessionTitle, sessionDate);
+    const sessionTime = document.getElementById("session-time").value;
+    addSession(sessionTitle, sessionDate + "T" + sessionTime);
 }
 document.getElementById("remove-session").onclick = () => {
     const sessionTitle = document.getElementById("session-title").value;
-    removeSession(sessionTitle);
+    const sessionDate = document.getElementById("session-date").value;
+    const sessionTime = document.getElementById("session-time").value;
+    removeSession(sessionTitle, sessionDate + "T" + sessionTime);
 }
 
 document.getElementById("add-driver").onclick = () => {
@@ -103,8 +129,8 @@ const createTableHead = () => {
     const table = document.getElementById("upcoming-sessions");
     const headRow = `<thead>
                     <tr>
-                        <th>id</th>
                         <th>Date</th>
+                        <th>Time</th>
                         <th>Title</th>
                         <th>Drivers</th>
                     </tr>
@@ -120,6 +146,7 @@ const updateTable = (sessions) => {
 
     const tableBody = document.createElement("tbody");
     table.append(tableBody);
+    sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     for (const session of sessions) {
         const row = document.createElement("tr");
@@ -128,10 +155,10 @@ const updateTable = (sessions) => {
             const col = document.createElement("td");
             switch (i) {
                 case 0:
-                    col.textContent = session.id;
+                    col.textContent = session.date.split("T")[0];
                     break;
                 case 1:
-                    col.textContent = session.date.replace("T", " ");
+                    col.textContent = session.date.split("T")[1];
                     break;
                 case 2:
                     col.textContent = session.title;
@@ -142,16 +169,20 @@ const updateTable = (sessions) => {
             row.append(col);
         }
     }
-    console.log("Table is updated.")
 }
 
+//iga sekund uuendan nimekirja, et näidata reaalajas andmeid
 socket.on("recieveRaceState", (raceState) => {
-    console.log(raceState)
-    fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
-    fillCarSelector(8);// add 8 cars
     updateTable(raceState.sessions);
     //check git
 })
+
+socket.on("sendedRaceState", (raceState) => {
+    updateTable(raceState.sessions);
+    fillCarSelector(8);// add 8 cars
+    fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
+});
+
 
 socket.on("createdSession", (response, sessions) => {
     console.log(response.message);
@@ -159,15 +190,18 @@ socket.on("createdSession", (response, sessions) => {
     if (response.success) {
         updateTable(sessions);
         fillSessionSelector(sessions);
+    } else {
+        alert(response.message);
     }
 })
 socket.on("removedSession", (response, sessions) => {
-    console.log(response.message);
 
     if (response.success) {
         updateTable(sessions);
         fillSessionSelector(sessions);
 
+    } else {
+        alert(response.message);
     }
 })
 
@@ -176,6 +210,8 @@ socket.on("addedDriver", (response, sessions) => {
 
     if (response.success) {
         updateTable(sessions);
+    } else {
+        alert(response.message);
     }
 })
 socket.on("editedDriver", (response, sessions) => {
@@ -183,13 +219,18 @@ socket.on("editedDriver", (response, sessions) => {
 
     if (response.success) {
         updateTable(sessions);
+    } else {
+        alert(response.message);
     }
+
 })
 socket.on("removedDriver", (response, sessions) => {
     console.log(response.message);
 
     if (response.success) {
         updateTable(sessions);
+    } else {
+        alert(response.message);
     }
 })
 
