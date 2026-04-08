@@ -1,7 +1,71 @@
 {
-  "raceMode": "SAFE",
-  "timer": 365,
+  "raceMode": "DANGER",
+  "timer": 0,
   "currentSession": null,
-  "sessions": [],
-  "duration": 600
+  "sessions": [
+    {
+      "id": 1,
+      "title": "test3",
+      "date": "2045-11-11T11:10",
+      "drivers": [],
+      "cars": {}
+    },
+    {
+      "id": 2,
+      "title": "test3",
+      "date": "2026-04-06T22:46",
+      "drivers": [],
+      "cars": {}
+    },
+    {
+      "id": 3,
+      "title": "tet",
+      "date": "2026-04-06T23:46",
+      "drivers": [],
+      "cars": {}
+    },
+    {
+      "id": 4,
+      "title": "this is test",
+      "date": "2026-04-06T23:46",
+      "drivers": [],
+      "cars": {}
+    },
+    {
+      "id": 5,
+      "title": "-1111111111111",
+      "date": "2026-04-06T23:46",
+      "drivers": [],
+      "cars": {}
+    },
+    {
+      "id": 6,
+      "title": "             000000000",
+      "date": "2026-04-06T23:46",
+      "drivers": [],
+      "cars": {}
+    },
+    {
+      "id": 7,
+      "title": "             000000000",
+      "date": "",
+      "drivers": [],
+      "cars": {}
+    },
+    {
+      "id": 8,
+      "title": "testing",
+      "date": "",
+      "drivers": [],
+      "cars": {}
+    },
+    {
+      "id": 9,
+      "title": "testing",
+      "date": "2999-02-11T22:00",
+      "drivers": [],
+      "cars": {}
+    }
+  ],
+  "duration": 60
 }
