@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.className = 'lap-btn';
             btn.innerText = driver.car;
             btn.id = `btn-car-${driver.car}`;
-
             btn.onclick = () => {
                 if (btn.disabled) return;
                 btn.classList.add('btn-active-flash');
@@ -71,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
         statusBanner.innerText = currentMode;
         statusBanner.className = "";
         statusBanner.classList.add(`status-${currentMode.toLowerCase()}`);
-
         const allButtons = document.querySelectorAll('.lap-btn');
 
         if (currentMode === 'SAFE' || currentMode === 'HAZARD') {
