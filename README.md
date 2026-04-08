@@ -78,3 +78,17 @@ For continuing in development mode, add in the terminal:
     npm run dev
 
 # x. Troubleshooting 
+**Q**: Command "npm run dev" does not run on my Mac/Linux device?
+
+**A**: Edit the following line in `package.json`:
+    
+    "scripts": {
+    "start": "node server.js",
+    "dev": "cross-env NODE_ENV=development node server.js"
+
+to:
+
+
+    "scripts": {
+    "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js"
