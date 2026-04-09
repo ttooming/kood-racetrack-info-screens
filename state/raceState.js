@@ -3,7 +3,8 @@ const raceState = {
     raceMode: "DANGER",
     timer: 0,
     currentSession: null,
-    sessions: []
+    sessions: [],
+    isActive: false
 };
 //Can access to it from another file
 module.exports = raceState;
