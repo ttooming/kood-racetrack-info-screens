@@ -1,4 +1,22 @@
-const socket = io();
+
+const socket = io("http://localhost:3000", {
+    auth: {
+        token: prompt("Enter access key:"),
+        role: "receptionist",
+        interface: "front-desk"
+    }
+});
+
+socket.on("connect_error", (err) => {
+    alert(err + ". Please try again.");
+    setTimeout(() => location.reload(), 500);
+})
+
+socket.on("connect", () => {
+    const adminPanel = document.querySelector(".admin-panel");
+    adminPanel.style.display = "flex";
+    console.log("Connected to Server - Front desk");
+});
 
 socket.emit("getRaceState");
 
@@ -234,6 +252,3 @@ socket.on("removedDriver", (response, sessions) => {
     }
 })
 
-socket.on("connect", () => {
-    console.log("Connected to Server - Front desk");
-});

@@ -13,6 +13,7 @@
   "type": "commonjs",
   "dependencies": {
     "cross-env": "^10.1.0",
+    "dotenv": "^17.4.1",
     "express": "^5.2.1",
     "socket.io": "^4.8.3"
   },

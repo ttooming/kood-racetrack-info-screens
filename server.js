@@ -1,3 +1,13 @@
+require('dotenv').config();
+//Check the access key defining the role of the user and give access to the corresponding features
+const requiredAccessKeys = ["safety_key", "observer_key", "receptionist_key"];
+const missingKeys = requiredAccessKeys.filter(key => !process.env[key]);
+
+if (missingKeys.length > 0) {
+    console.error(`Missing required access keys: ${missingKeys.join(', ')}`);
+    process.exit(1);
+}
+
 // Setting up webserver, real-time utility
 const express = require("express");
 const http = require("http");
@@ -34,6 +44,10 @@ if (remainder > 0) {
     raceService.finishRace(io);
 }
 
+const receptionistKey = process.env.receptionist_key;
+const observerKey = process.env.observer_key;
+const safetyKey = process.env.safety_key;
+
 // Express route handler
 app.use(express.static("public"));// Base directory
 app.get("/", (req, response) => {
@@ -61,10 +75,36 @@ app.get("/race-flags", (req, response) => {
     response.sendFile(__dirname + "/public/race-flags/index.html");
 });
 
+//Define roles and their access keys
+const roles = {
+    [safetyKey]: "safety official",
+    [observerKey]: "lap-line observer",
+    [receptionistKey]: "receptionist"
+}
+
+// check the access key for each connection and assign role
+io.use((socket, next) => {
+    const token = socket.handshake.auth.token;
+    const accessRole = socket.handshake.auth.role;
+    const interface = socket.handshake.auth.interface;
+    const role = roles[token];
+
+    if (role && role === accessRole) {
+        socket.role = role;
+        console.log(`Client connected to ${interface} with role: ${role}`);
+        next();
+    } else {
+        setTimeout(() => {
+            if (token)
+                console.log(`Client failed to authenticate with token: '${token}' in ${interface}`);
+            next(new Error("Invalid access key"));
+        }, 500);
+    }
+})
+
 // Incase of race state change
 // Output of server status
 io.on("connection", (socket) => {
-    console.log("Client connected");
 
     const stateInterval = setInterval(() => {
         io.emit("recieveRaceState", raceState);

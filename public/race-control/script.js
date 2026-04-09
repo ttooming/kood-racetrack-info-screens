@@ -1,4 +1,21 @@
-const socket = io();
+const socket = io("http://localhost:3000", {
+    auth: {
+        token: prompt("Enter access key:"),
+        role: "safety official",
+        interface: "race-control"
+    }
+});
+
+socket.on("connect_error", (err) => {
+    alert(err + ". Please try again.");
+    setTimeout(() => location.reload(), 500);
+})
+
+socket.on("connect", () => {
+    const adminPanel = document.querySelector(".admin-panel");
+    adminPanel.style.display = "block";
+    console.log("Connected to server - Race Control.");
+})
 
 document.addEventListener("DOMContentLoaded", () => {
     // --- ELEMENDID ---
