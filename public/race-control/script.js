@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
             endBtn.disabled = false;
             setFlagsDisabled(true);
         }
-        else if (mode === 'DANGER' || mode === 'OFF') {
+        else if (mode === 'DANGER') {
             if (!isSessionActive) {
                 startBtn.disabled = false;
                 endBtn.disabled = true;
@@ -110,10 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Uuendame andmed kohalikes muutujates
         activeDrivers = state.currentSession ? state.currentSession.drivers : [];
         nextDrivers = (state.sessions && state.sessions.length > 0) ? state.sessions[0].drivers : [];
-<<<<<<< HEAD
-
-=======
->>>>>>> 17e7b7c44fbed67e69c1c9880ed19c3799225b09
         // Kui pop-up on lahti, värskendame selle sisu reaalajas
         if (!modal.classList.contains('hidden')) {
             const currentView = modalTitle.innerText.includes("ON TRACK") ? 'current' : 'next';
