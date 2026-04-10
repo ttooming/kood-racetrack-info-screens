@@ -106,6 +106,7 @@ io.use((socket, next) => {
 // Output of server status
 io.on("connection", (socket) => {
 
+    // works continiounly
     const stateInterval = setInterval(() => {
         io.emit("recieveRaceState", raceState);
     }, 1000);
@@ -115,8 +116,8 @@ io.on("connection", (socket) => {
         clearInterval(stateInterval);
     });
 
-    //tagastan selleks et tabel oleks kohe nähtav kui leht laetakse
-    //kasutatakse kui andmed on vaja saata 1 kord.
+    // Returning this so the table is immediately visible when the page loads.
+    // Used when data needs to be sent only once.
     socket.on("getRaceState", () => {
         //read the raceState from state.json
         io.emit("sendedRaceState", raceState);
@@ -166,6 +167,12 @@ io.on("connection", (socket) => {
     socket.on("removeDriver", (sessionId, driverName) => {
         sessionService.removeDriver(io, sessionId, driverName);
     })
+
+    //change buttons lapTrackeris
+    socket.on("pressButton", (carNumber) => {
+        io.emit("pressedButton", carNumber);
+    })
+
 });
 
 server.listen(3000, () => {

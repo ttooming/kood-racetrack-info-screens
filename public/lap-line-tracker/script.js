@@ -59,6 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.innerText = driver.car;
             btn.id = `btn-car-${driver.car}`;
             btn.onclick = () => {
+                socket.emit("pressButton", btn.innerText);
+            }
+            socket.on("pressedButton", (carNumber) => {
+                //copy the logic with buttons findByCarNumber
+            })
+            btn.onclick = () => {
                 if (btn.disabled) return;
                 btn.classList.add('btn-active-flash');
                 setTimeout(() => btn.classList.remove('btn-active-flash'), 100);
