@@ -170,6 +170,7 @@ function removeSession(io, sessionTitle, sessionDate) {
 // 
 function endSession(io) {
     raceState.raceMode = "DANGER";
+    raceState.isActive = false;
     raceState.currentSession = null;
     saveState(raceState);
     io.emit("raceModeChanged", "DANGER");

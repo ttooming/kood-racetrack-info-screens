@@ -33,9 +33,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmBtn = document.getElementById('modal-confirm-btn');
 
     // --- ANDMED ---
-    let isSessionActive = false;
+
     let activeDrivers = []; // Need, kes on hetkel rajal (currentSession)
     let nextDrivers = [];   // Need, kes on järjekorras ootel (sessions[0])
+    // Differing between DANGER during session and DANGER after session
+    let hasSession = false;
+
+    // --- SOCKET KUULAJAD ---
+
+    socket.on("recieveRaceState", (state) => {
+        // Uuendame andmed kohalikes muutujates
+        activeDrivers = state.currentSession ? state.currentSession.drivers : [];
+        nextDrivers = (state.sessions && state.sessions.length > 0) ? state.sessions[0].drivers : [];
+        // Kui pop-up on lahti, värskendame selle sisu reaalajas
+        if (!modal.classList.contains('hidden')) {
+            const currentView = modalTitle.innerText.includes("ON TRACK") ? 'current' : 'next';
+            renderModalList(currentView);
+        }
+        //Session or no session for mode DANGER
+        hasSession = state.isActive;
+        if (state && state.raceMode) updateUIByMode(state.raceMode);
+    });
+
+    socket.on('raceModeChanged', (mode) => updateUIByMode(mode));
+
+    socket.on('sessionEnded', () => {
+
+        // Me ei tee reload(), vaid küsime lihtsalt uued andmed
+        //socket.emit("getRaceState"); 
+    });
 
     // --- ABI-FUNKTSIOONID ---
 
@@ -102,8 +128,8 @@ document.addEventListener("DOMContentLoaded", () => {
             endBtn.disabled = false;
             setFlagsDisabled(true);
         }
-        else if (mode === 'DANGER' || mode === 'OFF') {
-            if (!isSessionActive) {
+        else if (mode === 'DANGER') {
+            if (!hasSession) {
                 startBtn.disabled = false;
                 endBtn.disabled = true;
                 setFlagsDisabled(true);
@@ -114,42 +140,18 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
         else if (mode === 'SAFE' || mode === 'HAZARD') {
-            isSessionActive = true;
             startBtn.disabled = true;
             endBtn.disabled = true;
             setFlagsDisabled(false);
         }
     };
 
-    // --- SOCKET KUULAJAD ---
-
-    socket.on("recieveRaceState", (state) => {
-        // Uuendame andmed kohalikes muutujates
-        activeDrivers = state.currentSession ? state.currentSession.drivers : [];
-        nextDrivers = (state.sessions && state.sessions.length > 0) ? state.sessions[0].drivers : [];
-        // Kui pop-up on lahti, värskendame selle sisu reaalajas
-        if (!modal.classList.contains('hidden')) {
-            const currentView = modalTitle.innerText.includes("ON TRACK") ? 'current' : 'next';
-            renderModalList(currentView);
-        }
-
-        if (state && state.raceMode) updateUIByMode(state.raceMode);
-    });
-
-    socket.on('raceModeChanged', (mode) => updateUIByMode(mode));
-
-    socket.on('sessionEnded', () => {
-        isSessionActive = false;
-        // Me ei tee reload(), vaid küsime lihtsalt uued andmed
-        //socket.emit("getRaceState"); 
-    });
-
     // --- NUPPUDE VAJUTUSED ---
 
     viewDriversBtn.onclick = () => showDriverModal('current');
 
     startBtn.onclick = () => {
-        isSessionActive = true;
+        // isSessionActive = true;
         socket.emit("startRace");
     };
 
