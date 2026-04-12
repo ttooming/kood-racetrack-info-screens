@@ -16,6 +16,7 @@ function changeRaceMode(io, newMode) {
     // Possibilities of new mode as "HAZARD" or "DANGER"
     raceState.raceMode = newMode;
     raceState.isActive = true;
+    console.log(raceState);
     saveState(raceState);
     io.emit("raceModeChanged", newMode);
 }

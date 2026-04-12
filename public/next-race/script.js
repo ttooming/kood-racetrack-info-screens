@@ -1,4 +1,10 @@
-const socket = io();
+const socket = io("http://localhost:3000", {
+    auth: {
+        token: 12345,
+        role: "guest",
+        interface: "next-race"
+    }
+});
 
 // DOM elemendid
 const listContainer = document.getElementById('driver-list');

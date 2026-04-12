@@ -1,4 +1,10 @@
-const socket = io();
+const socket = io("http://localhost:3000", {
+    auth: {
+        token: 12345,
+        role: "guest",
+        interface: "leader-board"
+    }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     const timerDisplay = document.getElementById('race-timer');

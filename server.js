@@ -79,7 +79,8 @@ app.get("/race-flags", (req, response) => {
 const roles = {
     [safetyKey]: "safety official",
     [observerKey]: "lap-line observer",
-    [receptionistKey]: "receptionist"
+    [receptionistKey]: "receptionist",
+    12345: "guest"
 }
 
 // check the access key for each connection and assign role
