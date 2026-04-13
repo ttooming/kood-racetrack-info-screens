@@ -1,7 +1,20 @@
-# Info-screens
+# 🏁 Beachside Racetrack System
 
-    
-## 1. Setup
+Real-time race management and display system for racing events at Beachside Racetrack.
+
+This application includes multiple user interfaces for race control, lap tracking, and public displays, all synchronized through a live server using WebSockets.
+
+---
+
+# 🧠 System Overview
+
+The system is built around a central **race state**, which is shared in real-time with all connected clients using Socket.IO.
+
+All interfaces (admin + public) stay synchronized automatically.
+
+# 🚀 Getting Started
+
+## 1. Install dependencies
 
 ### Node.js and npm
 
@@ -23,35 +36,23 @@ or for npm:
 
     1.2.3
     
-you are all set. If not, head out to **Troubleshooting** down below.
+you are all set. If not, enter in terminal:
+
+    npm install
 
 ### cross-env
 
-For accessing development environment, please insert in terminal:
+For accessing development environment, install **cross-env** in terminal:
 
     npm install cross-env
 
 ### ngrok
 
-For accessing the program on several devices, please install **ngrok** in terminal:
-
+For accessing the program on several devices, install **ngrok** in terminal:
 
     npm install -g ngrok
 
-## 2. Launching the program
-
-### Real-time multi-device connection
-
-For accessing the program on the Web, insert in terminal:
-
-    ngrok http 3000
-
-
-That generates an address, e.g:
-
-**https://abc123.ngrok.io**
-
-### Access control
+## 2. Start the server
 
 Before starting the program, passwords are needed for granting the permission for employee's interfaces. There are:
 
@@ -67,8 +68,6 @@ Passwords are 8 character length numbers and low-case letters. Declare passwords
     export observer_key=662e0f6c
     export safety_key=a2d393bc
 
-### Enviroment mode
-
 For continuing in production mode, add right after the keys in the terminal:
 
     npm start
@@ -77,7 +76,176 @@ For continuing in development mode, add in the terminal:
 
     npm run dev
 
-# x. Troubleshooting 
+## 3. Open in browser
+
+By default, insert in terminal:
+
+    http://localhost:3000
+
+For accessing the program using **ngrok**, insert in terminal:
+
+    ngrok http 3000
+
+That generates an address, e.g:
+
+**https://abc123.ngrok.io**
+
+# 🧭 User Interfaces Guide
+
+## 🔐 Employee Interfaces
+
+Accessible from the main menu (login may be required).
+
+## 🎛️ Race Control (`/race-control`)
+
+Main control panel for managing the race.
+
+**Features:**
+
+ - Start a new race session
+
+ - Change race mode:
+
+    - 🟢 Safe (Green)
+
+    - 🟡 Hazard (Yellow)
+
+    - 🔴 Danger (Red)
+
+    - 🏁 Finish
+
+ - End current session
+
+ - View active drivers
+
+ - Live session timer
+
+## 🏎️ Lap Tracker (`/lap-line-tracker`)
+
+Used for recording laps in real-time.
+
+**Features:**
+
+ - Register laps per car number
+
+ - Updates leaderboard instantly
+
+## 🧾 Front Desk (`/front-desk`)
+
+Session and driver management.
+
+**Features:**
+
+ - Create new race sessions
+
+ - Add / edit / remove drivers
+
+ - Assign car numbers
+
+# 🌍 Public Interfaces
+
+Accessible without login. Designed for display screens with full screen capability.
+
+## 📊 Leaderboard (`/leader-board`)
+
+Live race standings.
+
+**Displays:**
+
+ - Position
+
+ - Driver name
+
+ - Car number
+
+ - Lap count
+
+ - Last lap time
+
+ - Best lap time
+ 
+ - Current race status (SAFE / DANGER / etc.)
+
+## ⏭️ Next Race (`/next-race`)
+
+Shows upcoming session and drivers.
+
+## ⏱️ Race Countdown (`/race-countdown`)
+
+Displays countdown timer before race start.
+
+## 🚦 Race Flags (`/race-flags`)
+
+Full-screen display of current race status:
+
+ - Green / Yellow / Red / Finish
+
+# 🔄 Real-Time Behavior
+ - All interfaces update automatically via WebSockets
+
+ - Refreshing a page restores the latest race state
+
+ - Race timer resumes correctly if session is active
+
+ - When race is finished, timer resets to 00:00
+
+# 📁 Project Structure (simplified)
+```
+/public
+  /race-control
+  /leader-board
+  /lap-line-tracker
+  /front-desk
+  ...
+
+/services
+  raceService.js
+  lapService.js
+  sessionService.js
+
+server.js
+state.json
+```
+# ⚙️ Key Concepts
+## 🧩 raceState
+
+Central object stored in `state.json`:
+
+ - currentSession
+
+ - raceMode
+ 
+ - timer
+ 
+ - drivers
+
+ - laps
+
+Used by all interfaces.
+
+# 🔌 Socket Events
+
+Examples:
+
+ - `receiveRaceState` → full UI sync
+
+ - `startRace`
+
+ - `changeRaceMode`
+
+ - `lapTracked`
+
+ - `finishRace`
+
+# ⚠️ Notes
+
+ - Only one race session can be active at a time
+
+ - Timer is controlled server-side
+
+ - UI state depends entirely on raceState
+
+# 🛠️ Troubleshooting 
 **Q**: Command "npm run dev" does not run on my Mac/Linux device?
 
 **A**: Edit the following line in `package.json`:
@@ -92,3 +260,15 @@ to:
     "scripts": {
     "start": "node server.js",
     "dev": "NODE_ENV=development node server.js"
+
+# 🏁 Summary
+
+ - This system provides a complete real-time race management solution with:
+
+ - Centralized state management
+
+ - Multiple synchronized interfaces
+
+ - Mobile-friendly UI
+
+ - Live race control and tracking
