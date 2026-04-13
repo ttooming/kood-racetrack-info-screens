@@ -26,6 +26,12 @@ function addDriver(io, sessionId, name, carNumber) {
             message: "Driver name is too short (min 1 characters)."
         }, raceState.sessions);
 
+    if (name.trim().length > 20)
+        return io.emit("addedDriver", {
+            success: false,
+            message: "Driver name is too long (max 20 characters)."
+        }, raceState.sessions);
+
     if (session.drivers.some(d => d.car === Number(carNumber))) {
         return io.emit("addedDriver", {
             success: false,
@@ -171,7 +177,7 @@ function removeSession(io, sessionTitle, sessionDate) {
 function endSession(io) {
     raceState.raceMode = "DANGER";
     raceState.isActive = false;
-    raceState.currentSession = null;
+    raceState.currentSession = raceState.sessions.shift();
     saveState(raceState);
     io.emit("raceModeChanged", "DANGER");
     io.emit("sessionEnded");

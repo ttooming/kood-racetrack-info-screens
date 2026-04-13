@@ -4,7 +4,7 @@ const requiredAccessKeys = ["safety_key", "observer_key", "receptionist_key"];
 const missingKeys = requiredAccessKeys.filter(key => !process.env[key]);
 
 if (missingKeys.length > 0) {
-    console.error(`Missing required access keys: ${missingKeys.join(', ')}`);
+    console.error(`Missing required access keys: ${missingKeys.join(', ')}. Please set them.`);
     process.exit(1);
 }
 
