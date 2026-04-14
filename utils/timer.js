@@ -24,6 +24,8 @@ function startTimer(io, countdown, onFinish) {
         if (raceState.raceMode === "FINISH") {
             clearInterval(raceTimer);
             raceTimer = null;
+            raceState.timer = 0;
+            saveState(raceState);
             io.emit("timerUpdate", 0);
             return;
         }
@@ -37,6 +39,8 @@ function startTimer(io, countdown, onFinish) {
             console.log("Race ended");
             clearInterval(raceTimer);
             raceTimer = null;
+            raceState.timer = 0;
+            saveState(raceState);
             onFinish(); //Callback to finishRace
             return;
         }

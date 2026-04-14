@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,6 @@
 <body>
     <div class="admin-panel">
         <h1>RACE CONTROL</h1>
-        
         <div class="timer-bar">
             <span class="timer-label">SESSION TIME Remaining</span>
             <div id="race-timer">00:00</div>
@@ -24,7 +24,7 @@
         <button id="view-drivers-btn" class="btn-info">View Drivers</button>
 
         <p id="status-display">Status: <span id="current-mode">OFF</span></p>
-        
+
         <hr>
 
         <div class="flag-controls">
@@ -34,7 +34,7 @@
             <button id="finish" class="btn-f1 btn-finish">Finish</button>
         </div>
     </div>
-    
+
     <div id="next-session-modal" class="modal hidden">
         <div class="modal-content">
             <header class="modal-header">
@@ -45,7 +45,9 @@
         </div>
     </div>
 
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

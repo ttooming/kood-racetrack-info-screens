@@ -188,3 +188,31 @@ footer {
     text-transform: uppercase;
     flex-shrink: 0;
 }
+
+/* --- FULL SCREEN NUPP --- */
+#fullscreen-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #F5F5DC; /* Kreemjas valge */
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 9999;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+#fullscreen-btn:hover {
+    opacity: 1;
+}
+
+.hidden-btn {
+    display: none !important;
+}

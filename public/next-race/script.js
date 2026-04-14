@@ -1,4 +1,10 @@
-const socket = io();
+const socket = io("http://localhost:3000", {
+    auth: {
+        token: 12345,
+        role: "guest",
+        interface: "next-race"
+    }
+});
 
 // DOM elemendid
 const listContainer = document.getElementById('driver-list');
@@ -27,8 +33,11 @@ socket.on("timerUpdate", (seconds) => {
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         sessionTimer.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/main
         // Vilkumine, kui aeg on läbi
         seconds <= 0 ? sessionTimer.classList.add('timer-blink') : sessionTimer.classList.remove('timer-blink');
     }
@@ -38,31 +47,43 @@ socket.on("timerUpdate", (seconds) => {
  * 3. SESSIOONI JA SÕIDU LOOGIKA
  */
 socket.on("raceStarted", () => {
+<<<<<<< HEAD
     paddockFooter.classList.add('hidden'); // Uus sõit algas, peidame bänneri
     //socket.emit("getRaceState"); // Uuendame kohe nimekirja järgmise grupi jaoks
+=======
+    paddockFooter.classList.add('hidden'); // Peidame bänneri, kui uus sõit algab
+>>>>>>> origin/main
 });
 
 socket.on("sessionEnded", () => {
-    paddockFooter.classList.remove('hidden'); // Sessioon lõppes, kutsume järgmised paddockisse
+    // KONTROLL: Näitame bännerit vaid siis, kui ekraanil on mõni auto/sessioon ootel
+    if (listContainer.children.length > 0 && !listContainer.innerHTML.includes("AWAITING DRIVERS")) {
+        paddockFooter.classList.remove('hidden');
+    }
 });
 
 /**
- * 4. VISUAALNE UUENDAMINE (F1 STIILIS KAARDID)
+ * 4. VISUAALNE UUENDAMINE 
  */
 function updateDriverList(state) {
-    const sessions = state.sessions || [];
-    const nextGroup = sessions[0]; // Võtame alati järgmise ootel oleva grupi
+    let sessions = state.sessions || [];
+    
+    // Sorteerime kellaaja järgi
+    sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    listContainer.innerHTML = ""; // Tühjendame vana nimekirja
+    const nextGroup = sessions[0];
+    listContainer.innerHTML = "";
 
     if (nextGroup) {
-        // Paneme pealkirjaks Denise'i valitud nime (nt "NEXT SESSION 2")
         mainTitle.innerText = (nextGroup.title || "NEXT RACE GROUP").toUpperCase();
 
         if (nextGroup.drivers && nextGroup.drivers.length > 0) {
             nextGroup.drivers.forEach(driver => {
                 const carNum = driver.car || "-";
+<<<<<<< HEAD
                 // Loome uue musta kaardi (div), mitte tabeli rea
+=======
+>>>>>>> origin/main
                 const card = `
                     <div class="driver-card">
                         <div class="car-number">${carNum.toString().padStart(2, '0')}</div>
@@ -76,12 +97,42 @@ function updateDriverList(state) {
     } else {
         mainTitle.innerText = "NO UPCOMING SESSIONS";
         listContainer.innerHTML = "";
+        paddockFooter.classList.add('hidden'); // Kui sessioone pole, peidame alati
     }
 }
 
 // Küsime andmeid kohe lehe avamisel
+<<<<<<< HEAD
 //socket.emit("getRaceState");
+=======
+socket.emit("getRaceState");
+>>>>>>> origin/main
 
 socket.on("connect", () => {
-    console.log("Next Race F1 Display Online");
+    console.log("Next Race Display Online");
 });
+
+/**
+     * TÄISEKRAANI FUNKTSIONAALSUS (Peidab nupu täisekraanil)
+     */
+    const fullBtn = document.getElementById('fullscreen-btn');
+
+    if (fullBtn) {
+        fullBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Viga: ${err.message}`);
+                });
+                // Peidame nupu kohe pärast klikki
+                fullBtn.classList.add('hidden-btn');
+            }
+        });
+    }
+
+    // Jälgime täisekraani olekut (kui tullakse Esc-ga tagasi)
+    document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) {
+            // Kui täisekraanilt väljutakse, toome nupu tagasi
+            fullBtn.classList.remove('hidden-btn');
+        }
+    });

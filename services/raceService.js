@@ -15,6 +15,8 @@ function changeRaceMode(io, newMode) {
     }
     // Possibilities of new mode as "HAZARD" or "DANGER"
     raceState.raceMode = newMode;
+    raceState.isActive = true;
+    console.log(raceState);
     saveState(raceState);
     io.emit("raceModeChanged", newMode);
 }
@@ -23,6 +25,7 @@ function startRace(io) {
     // Eliminating duplicate timer
     stopTimer();
     raceState.raceMode = "SAFE";
+    raceState.isActive = true;
     //Data for loadState function
     raceState.duration = countdown;
 
@@ -30,7 +33,6 @@ function startRace(io) {
         finishRace(io);
     });
     //Selects first item
-    raceState.currentSession = raceState.sessions.shift();
     saveState(raceState);
     io.emit("raceStarted", raceState.currentSession)
     io.emit("raceModeChanged", "SAFE")
@@ -38,7 +40,7 @@ function startRace(io) {
 
 function resumeRace(io, remainingTime) {
     stopTimer();
-    raceState.raceMode = "SAFE";
+    raceState.isActive = true;
     startTimer(io, remainingTime, () => {
         finishRace(io);
     });
@@ -51,6 +53,7 @@ function finishRace(io) {
         return;
     }
     raceState.raceMode = "FINISH";
+    raceState.isActive = false;
     // 00:00 in all cases
     raceState.timer = 0;
     saveState(raceState);

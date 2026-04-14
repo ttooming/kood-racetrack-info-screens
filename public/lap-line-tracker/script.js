@@ -1,4 +1,21 @@
-const socket = io();
+const socket = io({
+    auth: {
+        token: prompt("Enter access key:"),
+        role: "lap-line observer",
+        interface: "lap-line-tracker"
+    }
+});
+
+socket.on("connect_error", (err) => {
+    alert(err + ". Please try again.");
+    setTimeout(() => location.reload(), 500);
+})
+
+socket.on("connect", () => {
+    const trackerContainer = document.getElementById("tracker-container");
+    trackerContainer.style.display = "flex";
+    console.log("Connected to Server - Lap Line Tracker");
+})
 
 document.addEventListener("DOMContentLoaded", () => {
     const grid = document.getElementById('lap-buttons-grid');
@@ -9,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentMode = "OFF";
     let drivers = [];
     let finishedCars = new Set();
+    let lastSessionId = null; // Lisame kontrolli, et mitte nuppe pidevalt üle joonistada
 
     // --- ANDMETE VASTUVÕTMINE ---
     socket.on("recieveRaceState", (state) => {
@@ -18,8 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
             sessionTitle.innerText = state.currentSession.title || "RACE";
             drivers = [...state.currentSession.drivers].sort((a, b) => a.car - b.car);
 
-            if (state.raceMode !== 'OFF') {
+            const currentSessionId = state.currentSession.title + drivers.length;
+            if (currentSessionId !== lastSessionId || grid.innerHTML === "") {
                 renderButtons();
+                lastSessionId = currentSessionId;
             }
         }
 
@@ -44,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.onclick = () => {
                 if (btn.disabled) return;
                 btn.classList.add('btn-active-flash');
-                setTimeout(() => btn.classList.remove('btn-active-flash'), 100);
+                setTimeout(() => btn.classList.remove('btn-active-flash'), 200);
                 if (navigator.vibrate) navigator.vibrate(50);
                 registerLap(driver.car, btn);
             };

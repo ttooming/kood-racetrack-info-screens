@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="et">
+
 <head>
     <meta charset="UTF-8">
-    <title>F1 LIVE LEADERBOARD</title>
+    <title>LIVE LEADERBOARD</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div id="next-race-screen">
         <header>
@@ -14,7 +16,7 @@
                     <h1 id="race-title">RACE SESSION</h1>
                 </div>
                 <div class="timer-container">
-                    <span class="timer-label">SESSION TIME</span>
+                    <span class="timer-label">SESSION TIME REMAINING</span>
                     <div id="race-timer">00:00</div>
                 </div>
             </div>
@@ -30,14 +32,17 @@
         </div>
 
         <div id="leaderboard-body">
-            </div>
+        </div>
 
         <div id="paddock-footer">
             <div id="status-banner" class="alert-banner">OFF</div>
         </div>
     </div>
 
+    <button id="fullscreen-btn">Full Screen</button>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

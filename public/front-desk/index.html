@@ -10,17 +10,17 @@
 
 <body>
     <div class="container">
-        <h1>Front desk</h1>
-        <br>
+        <h1>FRONT DESK</h1>
         <div class="admin-panel">
             <div class="session-controls">
                 <h2>Configure sessions</h2>
-
                 <label for="session-title">Input the session name:</label>
                 <input type="text" id="session-title">
 
-                <label for="session-date">Input time:</label>
-                <input type="datetime-local" id="session-date">
+                <label for="session-date">Input date:</label>
+                <input type="date" id="session-date">
+                <label for="session-time">Input time:</label>
+                <input type="time" id="session-time">
 
                 <div class="buttons">
                     <button class="session-button" id="add-session">Add</button>
@@ -44,12 +44,13 @@
                     <button class="driver-button" id="remove-driver">Remove</button>
                 </div>
             </div>
-
         </div>
+
         <div class="table-section">
             <table id="upcoming-sessions">
             </table>
         </div>
+    </div>
 
 
     </div>

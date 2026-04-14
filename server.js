@@ -1,7 +1,18 @@
+//Check the access key defining the role of the user and give access to the corresponding features
+const requiredAccessKeys = ["safety_key", "observer_key", "receptionist_key"];
+const missingKeys = requiredAccessKeys.filter(key => !process.env[key]);
+
+if (missingKeys.length > 0) {
+    console.error(`Missing required access keys: ${missingKeys.join(', ')}. Please set them.`);
+    process.exit(1);
+}
+
 // Setting up webserver, real-time utility
+require("dotenv").config();
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const ngrok = require("@ngrok/ngrok");
 
 //Targets of saved raceState data
 const raceState = require("./state/raceState");
@@ -16,7 +27,12 @@ const timer = require("./utils/timer");
 //Execution of program
 const app = express();
 const server = http.createServer(app);// Server with express
-const io = new Server(server);// Socket + Express
+const io = require("socket.io")(server, { // Allow multible addresses
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});// Socket + Express
 
 //Loading values to persist data after server restart
 const savedState = loadState();
@@ -33,6 +49,10 @@ if (remainder > 0) {
 } else {
     raceService.finishRace(io);
 }
+
+const receptionistKey = process.env.receptionist_key;
+const observerKey = process.env.observer_key;
+const safetyKey = process.env.safety_key;
 
 // Express route handler
 app.use(express.static("public"));// Base directory
@@ -61,11 +81,39 @@ app.get("/race-flags", (req, response) => {
     response.sendFile(__dirname + "/public/race-flags/index.html");
 });
 
+//Define roles and their access keys
+const roles = {
+    [safetyKey]: "safety official",
+    [observerKey]: "lap-line observer",
+    [receptionistKey]: "receptionist",
+    12345: "guest"
+}
+
+// check the access key for each connection and assign role
+io.use((socket, next) => {
+    const token = socket.handshake.auth.token;
+    const accessRole = socket.handshake.auth.role;
+    const interface = socket.handshake.auth.interface;
+    const role = roles[token];
+
+    if (role && role === accessRole) {
+        socket.role = role;
+        console.log(`Client connected to ${interface} with role: ${role}`);
+        next();
+    } else {
+        setTimeout(() => {
+            if (token)
+                console.log(`Client failed to authenticate with token: '${token}' in ${interface}`);
+            next(new Error("Invalid access key"));
+        }, 500);
+    }
+})
+
 // Incase of race state change
 // Output of server status
 io.on("connection", (socket) => {
-    console.log("Client connected");
-
+    console.log("CONNECTED:", socket.id);
+    // works continiounly
     const stateInterval = setInterval(() => {
         io.emit("recieveRaceState", raceState);
     }, 1000);
@@ -75,10 +123,11 @@ io.on("connection", (socket) => {
         clearInterval(stateInterval);
     });
 
-    //tagastan selleks et tabel oleks kohe nähtav kui leht laetakse
+    // Returning this so the table is immediately visible when the page loads.
+    // Used when data needs to be sent only once.
     socket.on("getRaceState", () => {
         //read the raceState from state.json
-        io.emit("recieveRaceState", raceState);
+        io.emit("sendedRaceState", raceState);
     });
     //Flags requests
     socket.emit("raceModeChanged", raceState.raceMode);
@@ -125,8 +174,26 @@ io.on("connection", (socket) => {
     socket.on("removeDriver", (sessionId, driverName) => {
         sessionService.removeDriver(io, sessionId, driverName);
     })
+
+    //change buttons lapTrackeris
+    socket.on("pressButton", (carNumber) => {
+        io.emit("pressedButton", carNumber);
+    })
+
 });
 
-server.listen(3000, () => {
+server.listen(3000, async () => {
     console.log("Server running on port 3000");
+    // Start ngrok tunnel automatically for the demo
+    try {
+        const listener = await ngrok.forward({
+            addr: 3000,
+            authtoken: process.env.NGROK_AUTHTOKEN
+        });
+        console.log(`\n======================================================`);
+        console.log(`🚀 Public URL: ${listener.url()}`);
+        console.log(`======================================================\n`);
+    } catch (error) {
+        console.error("Failed to start ngrok tunnel:", error.message);
+    }
 });

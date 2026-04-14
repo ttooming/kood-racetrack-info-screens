@@ -1,4 +1,22 @@
-const socket = io();
+
+const socket = io({
+    auth: {
+        token: prompt("Enter access key:"),
+        role: "receptionist",
+        interface: "front-desk"
+    }
+});
+
+socket.on("connect_error", (err) => {
+    alert(err + ". Please try again.");
+    setTimeout(() => location.reload(), 500);
+})
+
+socket.on("connect", () => {
+    const adminPanel = document.querySelector(".admin-panel");
+    adminPanel.style.display = "flex";
+    console.log("Connected to Server - Front desk");
+});
 
 socket.emit("getRaceState");
 
@@ -8,6 +26,16 @@ const addSession = (title, date) => {
 
     if (new Date(date) < new Date()) {
         alert("Session can't be in past!");
+        return;
+    }
+    if (date.trim().length === 1) {
+        alert("Please select date and time for the session!");
+        return;
+    } else if (date.at(-1) === "T") {
+        alert("Please select time for the session!");
+        return;
+    } else if (date.at(0) === "T") {
+        alert("Please select date for the session!");
         return;
     }
 
@@ -20,6 +48,19 @@ const removeSession = (title, date) => {
 
 const addDriver = (sessionId, driverName, carNumber) => {
     console.log("Requesting add the driver:", driverName);
+
+    if (carNumber === "none" && sessionId === "none") {
+        alert("Please select session and car number for the driver!");
+        return;
+    }
+    if (carNumber === "none") {
+        alert("Please select the car number for the driver!");
+        return;
+    }
+    if (sessionId === "none") {
+        alert("Please select the session for the driver!");
+        return;
+    }
     socket.emit("addDriver", sessionId, driverName, carNumber);
 }
 const editDriver = (sessionId, driverName, carNumber) => {
@@ -35,12 +76,14 @@ const removeDriver = (sessionId, driverName) => {
 document.getElementById("add-session").onclick = () => {
     const sessionTitle = document.getElementById("session-title").value;
     const sessionDate = document.getElementById("session-date").value;
-    addSession(sessionTitle, sessionDate);
+    const sessionTime = document.getElementById("session-time").value;
+    addSession(sessionTitle, sessionDate + "T" + sessionTime);
 }
 document.getElementById("remove-session").onclick = () => {
     const sessionTitle = document.getElementById("session-title").value;
     const sessionDate = document.getElementById("session-date").value;
-    removeSession(sessionTitle, sessionDate);
+    const sessionTime = document.getElementById("session-time").value;
+    removeSession(sessionTitle, sessionDate + "T" + sessionTime);
 }
 
 document.getElementById("add-driver").onclick = () => {
@@ -144,16 +187,20 @@ const updateTable = (sessions) => {
             row.append(col);
         }
     }
-    console.log("Table is updated.")
 }
 
+//iga sekund uuendan nimekirja, et näidata reaalajas andmeid
 socket.on("recieveRaceState", (raceState) => {
-    console.log(raceState)
-    fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
-    fillCarSelector(8);// add 8 cars
     updateTable(raceState.sessions);
     //check git
 })
+
+socket.on("sendedRaceState", (raceState) => {
+    updateTable(raceState.sessions);
+    fillCarSelector(8);// add 8 cars
+    fillSessionSelector(raceState.sessions);//first time fill the session creates or remove update this selector
+});
+
 
 socket.on("createdSession", (response, sessions) => {
     console.log(response.message);
@@ -205,6 +252,3 @@ socket.on("removedDriver", (response, sessions) => {
     }
 })
 
-socket.on("connect", () => {
-    console.log("Connected to Server - Front desk");
-});

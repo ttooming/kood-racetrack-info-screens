@@ -1,7 +1,7 @@
 {
-  "raceMode": "SAFE",
-  "timer": 244,
-  "currentSession": null,
+  "raceMode": "DANGER",
+  "timer": 0,
   "sessions": [],
-  "duration": 600
+  "isActive": false,
+  "duration": 60
 }
