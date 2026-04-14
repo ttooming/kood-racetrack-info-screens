@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentMode = "OFF";
     let drivers = [];
     let finishedCars = new Set();
+    let lastSessionId = null; // Lisame kontrolli, et mitte nuppe pidevalt üle joonistada
 
     // --- ANDMETE VASTUVÕTMINE ---
     socket.on("recieveRaceState", (state) => {
@@ -35,8 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
             sessionTitle.innerText = state.currentSession.title || "RACE";
             drivers = [...state.currentSession.drivers].sort((a, b) => a.car - b.car);
 
-            if (state.raceMode !== 'OFF') {
+           const currentSessionId = state.currentSession.title + drivers.length; 
+            if (currentSessionId !== lastSessionId || grid.innerHTML === "") {
                 renderButtons();
+                lastSessionId = currentSessionId;
             }
         }
 
@@ -58,16 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.className = 'lap-btn';
             btn.innerText = driver.car;
             btn.id = `btn-car-${driver.car}`;
-            btn.onclick = () => {
-                socket.emit("pressButton", btn.innerText);
-            }
-            socket.on("pressedButton", (carNumber) => {
-                //copy the logic with buttons findByCarNumber
-            })
+
             btn.onclick = () => {
                 if (btn.disabled) return;
                 btn.classList.add('btn-active-flash');
-                setTimeout(() => btn.classList.remove('btn-active-flash'), 100);
+                setTimeout(() => btn.classList.remove('btn-active-flash'), 200);
                 if (navigator.vibrate) navigator.vibrate(50);
                 registerLap(driver.car, btn);
             };

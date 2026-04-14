@@ -30,18 +30,22 @@ function recordLap(io, carNumber) {
 
     // --- ALIIS MUUTIS RINGIAJA LOOGIKAT---
 
-    if (raceState.raceMode === "FINISH") {
-        console.log(`Auto ${carNumber} lõpetas võistluse!`);
-    } else {
-        if (car.lastLapTimestamp === null) {
-            // ESIMENE ÜLETUS: Fikseerime 0-punkti. Ringide arv jääb 0.
-            car.laps = 0;
+  
+     if (car.lastLapTimestamp === null) {
+            // ESIMENE ÜLETUS: Fikseerime 0-punkti. Ringide arv jääb 1.
+            car.laps = 1;
             car.lastLapTimestamp = now;
             console.log(`Auto ${carNumber}: Sõit algas (0-punkt fikseeritud)`);
-        } else {
-            // JÄRGMISED ÜLETUSED: Arvutame ringiaja eelmisest ületusest
+    } else if (!car.finished) {
+                // JÄRGMISED ÜLETUSED: Arvutame ringiaja eelmisest ületusest
             lapTime = now - car.lastLapTimestamp;
-            car.laps += 1;
+
+            if (raceState.raceMode === "FINISH") {
+            car.finished = true;
+            console.log(`Car ${carNumber}: Race Finished!`);
+            } else {
+            car.laps += 1; // Move to next lap
+        }
 
             // Kontrollime, kas on uus kiireim ring (Fastest Lap)
             if (car.fastestLap === null || lapTime < car.fastestLap) {
@@ -53,13 +57,13 @@ function recordLap(io, carNumber) {
             car.lastLapTime = lapTime; // Salvestame ka viimase ringi aja
             console.log(`Auto ${carNumber}: Ring ${car.laps} läbitud ajaga ${lapTime}ms`);
         }
-    }
+    
 
     // Salvestame muudatused faili (state.json)
     saveState(raceState);
 
     // Teavitame kõiki liideseid (Leaderboard, Tracker jne) uuest seisust
-    //io.emit("recieveRaceState", raceState);
+    io.emit("recieveRaceState", raceState);
 
     // Lisaks saadame spetsiifilise sündmuse (vajadusel teiste moodulite jaoks)
     io.emit("lapRecorded", true, {

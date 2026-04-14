@@ -79,3 +79,7 @@ body, html {
 #fullscreen-btn:hover {
     background-color: #FDF5E6 !important;
 }
+
+.hidden-btn {
+    display: none !important;
+}

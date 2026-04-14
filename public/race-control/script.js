@@ -41,16 +41,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- SOCKET KUULAJAD ---
 
+ // --- SOCKET KUULAJAD ---
+
     socket.on("recieveRaceState", (state) => {
+        // --- ALIIS MUUTIS: Sorteerime sessioonid kellaaja järgi ---
+        let sortedSessions = [];
+        if (state.sessions && state.sessions.length > 0) {
+            sortedSessions = [...state.sessions].sort((a, b) => new Date(a.date) - new Date(b.date));
+        }
+
         // Uuendame andmed kohalikes muutujates
         activeDrivers = state.currentSession ? state.currentSession.drivers : [];
-        nextDrivers = (state.sessions && state.sessions.length > 0) ? state.sessions[0].drivers : [];
+        
+        // Kasutame nüüd sorteeritud massiivi esimest elementi järgmise sessiooni jaoks
+        nextDrivers = (sortedSessions.length > 0) ? sortedSessions[0].drivers : [];
+
         // Kui pop-up on lahti, värskendame selle sisu reaalajas
         if (!modal.classList.contains('hidden')) {
             const currentView = modalTitle.innerText.includes("ON TRACK") ? 'current' : 'next';
             renderModalList(currentView);
         }
-        //Session or no session for mode DANGER
+        
+        // Session or no session for mode DANGER
         hasSession = state.isActive;
         if (state && state.raceMode) updateUIByMode(state.raceMode);
     });
@@ -89,13 +101,18 @@ document.addEventListener("DOMContentLoaded", () => {
         if (type === 'current' && drivers.length === 0 && nextDrivers.length > 0) {
             drivers = nextDrivers;
             modalTitle.innerText = "NEXT SESSION (READY TO START)";
-        } else if (type === 'current') {
+        } else if (type === 'current' && drivers.length > 0) {
             modalTitle.innerText = "DRIVERS ON TRACK";
-        } else {
+        } else if (type === 'next' && drivers.length > 0) {
             modalTitle.innerText = "NEXT SESSION (CALL TO PADDOCK)";
+        } else {
+            // --- ALIIS MUUTIS: Kui sessioone/sõitjaid pole ---
+            modalTitle.innerText = "NO UPCOMING SESSIONS";
+            modalList.innerHTML = "<div style='color:orange; padding:40px; text-align:center; font-weight:bold;'>NO UPCOMING SESSIONS</div>";
+            confirmBtn.innerText = "CLOSE";
+            return; // Lõpetame funktsiooni siin, et vältida tühja nimekirja joonistamist
         }
 
-        // MUUDATUS: Nüüd on alati nupu tekstiks "CLOSE"
         confirmBtn.innerText = "CLOSE";
 
         if (drivers && drivers.length > 0) {
@@ -106,8 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="modal-name">${d.name.toUpperCase()}</span>
                     </div>`;
             });
-        } else {
-            modalList.innerHTML = "<div style='color:orange; padding:20px; text-align:center;'>NO DRIVERS IN SYSTEM</div>";
         }
     };
 
@@ -129,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setFlagsDisabled(true);
         }
         else if (mode === 'DANGER') {
-            if (!hasSession) {
+            if (nextDrivers.length > 0) {
                 startBtn.disabled = false;
                 endBtn.disabled = true;
                 setFlagsDisabled(true);

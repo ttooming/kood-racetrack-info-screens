@@ -129,3 +129,38 @@ header {
 .hidden {
     display: none !important;
 }
+
+/* --- TAHVLI KOHANDUSED (MAX 8 SÕITJAT) --- */
+
+/* Landscape režiim */
+@media (orientation: landscape) {
+    #lap-buttons-grid {
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 12px;
+        padding: 5px 0;
+    }
+
+    .lap-btn {
+        /* Landscape'is on ekraan madalam, vähendame veidi kirja suurust */
+        font-size: clamp(2rem, 10vw, 4.5rem);
+        min-height: auto; 
+    }
+
+    #status-banner {
+        padding: 10px;
+        font-size: 1.5rem;
+    }
+}
+
+/* Portrait režiim  */
+@media (orientation: portrait) {
+    #lap-buttons-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+}
+
+.lap-btn {
+    aspect-ratio: 1 / 1; /* Hoiab nupud võimalusel ruudukujulised */
+    max-height: 25vh;    /* Takistab nuppude liiga kõrgeks venimist landscape'is */
+}
