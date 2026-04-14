@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // KUULAJAD
-    socket.on("recieveRaceState", (state) => {
+    socket.on("receiveRaceState", (state) => {
         renderLeaderboard(state);
     });
 
@@ -117,9 +117,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Küsime algseisu kohe lehe laadimisel
     //socket.emit("getRaceState");
 
-   /**
-     * TÄISEKRAANI FUNKTSIONAALSUS (Peidab nupu täisekraanil)
-     */
+    /**
+      * TÄISEKRAANI FUNKTSIONAALSUS (Peidab nupu täisekraanil)
+      */
     const fullBtn = document.getElementById('fullscreen-btn');
 
     if (fullBtn) {
@@ -141,4 +141,4 @@ document.addEventListener("DOMContentLoaded", () => {
             fullBtn.classList.remove('hidden-btn');
         }
     });
-    });
+});

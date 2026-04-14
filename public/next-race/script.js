@@ -15,7 +15,7 @@ const sessionTimer = document.getElementById('session-timer');
 /**
  * 1. REAALAJALINE ANDMETE UUENDAMINE
  */
-const eventsToListen = ["recieveRaceState", "createdSession", "removedSession", "addedDriver", "editedDriver", "removedDriver"];
+const eventsToListen = ["receiveRaceState", "createdSession", "removedSession", "addedDriver", "editedDriver", "removedDriver"];
 
 eventsToListen.forEach(eventName => {
     socket.on(eventName, (data, sessions) => {
@@ -57,7 +57,7 @@ socket.on("sessionEnded", () => {
  */
 function updateDriverList(state) {
     let sessions = state.sessions || [];
-    
+
     // Sorteerime kellaaja järgi
     sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -97,24 +97,24 @@ socket.on("connect", () => {
 /**
      * TÄISEKRAANI FUNKTSIONAALSUS (Peidab nupu täisekraanil)
      */
-    const fullBtn = document.getElementById('fullscreen-btn');
+const fullBtn = document.getElementById('fullscreen-btn');
 
-    if (fullBtn) {
-        fullBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.error(`Viga: ${err.message}`);
-                });
-                // Peidame nupu kohe pärast klikki
-                fullBtn.classList.add('hidden-btn');
-            }
-        });
-    }
-
-    // Jälgime täisekraani olekut (kui tullakse Esc-ga tagasi)
-    document.addEventListener('fullscreenchange', () => {
+if (fullBtn) {
+    fullBtn.addEventListener('click', () => {
         if (!document.fullscreenElement) {
-            // Kui täisekraanilt väljutakse, toome nupu tagasi
-            fullBtn.classList.remove('hidden-btn');
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Viga: ${err.message}`);
+            });
+            // Peidame nupu kohe pärast klikki
+            fullBtn.classList.add('hidden-btn');
         }
     });
+}
+
+// Jälgime täisekraani olekut (kui tullakse Esc-ga tagasi)
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        // Kui täisekraanilt väljutakse, toome nupu tagasi
+        fullBtn.classList.remove('hidden-btn');
+    }
+});

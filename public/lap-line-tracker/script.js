@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let lastSessionId = null; // Lisame kontrolli, et mitte nuppe pidevalt üle joonistada
 
     // --- ANDMETE VASTUVÕTMINE ---
-    socket.on("recieveRaceState", (state) => {
+    socket.on("receiveRaceState", (state) => {
         console.log("State kätte saadud:", state);
 
         if (state.currentSession) {

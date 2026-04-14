@@ -190,7 +190,7 @@ const updateTable = (sessions) => {
 }
 
 //iga sekund uuendan nimekirja, et näidata reaalajas andmeid
-socket.on("recieveRaceState", (raceState) => {
+socket.on("receiveRaceState", (raceState) => {
     updateTable(raceState.sessions);
     //check git
 })

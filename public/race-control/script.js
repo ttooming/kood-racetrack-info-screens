@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- SOCKET KUULAJAD ---
 
-    socket.on("recieveRaceState", (state) => {
+    socket.on("receiveRaceState", (state) => {
         // --- ALIIS MUUTIS: Sorteerime sessioonid kellaaja järgi ---
         let sortedSessions = [];
         if (state.sessions && state.sessions.length > 0) {
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (state && state.raceMode) updateUIByMode(state.raceMode);
     });
 
-    socket.on('raceModeChanged', (mode) => updateUIByMode(mode));
+    socket.on('raceModeChanged', (mode) => { updateUIByMode(mode) });
 
     socket.on('sessionEnded', () => {
 
@@ -136,12 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (modeDisplay) modeDisplay.innerText = mode;
         updateStatusColor(mode);
 
-        if (mode === 'FINISH') {
-            startBtn.disabled = true;
-            endBtn.disabled = false;
-            setFlagsDisabled(true);
-        }
-        else if (mode === 'DANGER') {
+        if (mode === 'DANGER') {
+            const hasDrivers = nextDrivers && nextDrivers.length > 0;
             if (!hasSession) {
                 startBtn.disabled = false;
                 endBtn.disabled = true;
@@ -152,6 +148,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 setFlagsDisabled(false);
             }
         }
+
+        else if (mode === 'FINISH') {
+            startBtn.disabled = true;
+            endBtn.disabled = false;
+            setFlagsDisabled(true);
+        }
+
         else if (mode === 'SAFE' || mode === 'HAZARD') {
             startBtn.disabled = true;
             endBtn.disabled = true;
@@ -164,7 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
     viewDriversBtn.onclick = () => showDriverModal('current');
 
     startBtn.onclick = () => {
-        // isSessionActive = true;
         socket.emit("startRace");
     };
 
