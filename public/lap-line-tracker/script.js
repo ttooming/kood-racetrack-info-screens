@@ -1,4 +1,4 @@
-const socket = io("http://localhost:3000", {
+const socket = io({
     auth: {
         token: prompt("Enter access key:"),
         role: "lap-line observer",
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sessionTitle.innerText = state.currentSession.title || "RACE";
             drivers = [...state.currentSession.drivers].sort((a, b) => a.car - b.car);
 
-           const currentSessionId = state.currentSession.title + drivers.length; 
+            const currentSessionId = state.currentSession.title + drivers.length;
             if (currentSessionId !== lastSessionId || grid.innerHTML === "") {
                 renderButtons();
                 lastSessionId = currentSessionId;

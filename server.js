@@ -1,4 +1,3 @@
-require('dotenv').config();
 //Check the access key defining the role of the user and give access to the corresponding features
 const requiredAccessKeys = ["safety_key", "observer_key", "receptionist_key"];
 const missingKeys = requiredAccessKeys.filter(key => !process.env[key]);
@@ -28,7 +27,12 @@ const timer = require("./utils/timer");
 //Execution of program
 const app = express();
 const server = http.createServer(app);// Server with express
-const io = new Server(server);// Socket + Express
+const io = require("socket.io")(server, { // Allow multible addresses
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});// Socket + Express
 
 //Loading values to persist data after server restart
 const savedState = loadState();
@@ -108,7 +112,7 @@ io.use((socket, next) => {
 // Incase of race state change
 // Output of server status
 io.on("connection", (socket) => {
-
+    console.log("CONNECTED:", socket.id);
     // works continiounly
     const stateInterval = setInterval(() => {
         io.emit("recieveRaceState", raceState);

@@ -1,5 +1,5 @@
 
-const socket = io("http://localhost:3000", {
+const socket = io({
     auth: {
         token: prompt("Enter access key:"),
         role: "receptionist",

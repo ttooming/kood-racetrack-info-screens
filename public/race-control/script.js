@@ -1,9 +1,9 @@
-const socket = io("http://localhost:3000", {
+const socket = io({
     auth: {
         token: prompt("Enter access key:"),
         role: "safety official",
         interface: "race-control"
-    }
+    },
 });
 
 socket.on("connect_error", (err) => {
@@ -41,8 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- SOCKET KUULAJAD ---
 
- // --- SOCKET KUULAJAD ---
-
     socket.on("recieveRaceState", (state) => {
         // --- ALIIS MUUTIS: Sorteerime sessioonid kellaaja järgi ---
         let sortedSessions = [];
@@ -52,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Uuendame andmed kohalikes muutujates
         activeDrivers = state.currentSession ? state.currentSession.drivers : [];
-        
+
         // Kasutame nüüd sorteeritud massiivi esimest elementi järgmise sessiooni jaoks
         nextDrivers = (sortedSessions.length > 0) ? sortedSessions[0].drivers : [];
 
@@ -61,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const currentView = modalTitle.innerText.includes("ON TRACK") ? 'current' : 'next';
             renderModalList(currentView);
         }
-        
+
         // Session or no session for mode DANGER
         hasSession = state.isActive;
         if (state && state.raceMode) updateUIByMode(state.raceMode);
@@ -144,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setFlagsDisabled(true);
         }
         else if (mode === 'DANGER') {
-            if (nextDrivers.length > 0) {
+            if (!hasSession) {
                 startBtn.disabled = false;
                 endBtn.disabled = true;
                 setFlagsDisabled(true);

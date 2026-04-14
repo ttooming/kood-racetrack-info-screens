@@ -1,29 +1,7 @@
 {
-  "raceMode": "FINISH",
+  "raceMode": "DANGER",
   "timer": 0,
-  "currentSession": {
-    "id": 7,
-    "title": "             000000000",
-    "date": "",
-    "drivers": [],
-    "cars": {}
-  },
-  "sessions": [
-    {
-      "id": 8,
-      "title": "testing",
-      "date": "",
-      "drivers": [],
-      "cars": {}
-    },
-    {
-      "id": 9,
-      "title": "testing",
-      "date": "2999-02-11T22:00",
-      "drivers": [],
-      "cars": {}
-    }
-  ],
-  "isActive": true,
-  "duration": 600
+  "sessions": [],
+  "isActive": false,
+  "duration": 60
 }

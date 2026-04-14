@@ -135,7 +135,7 @@ header {
 /* Landscape režiim */
 @media (orientation: landscape) {
     #lap-buttons-grid {
-        grid-template-columns: repeat(4, 1fr); 
+        grid-template-columns: repeat(4, 1fr);
         gap: 12px;
         padding: 5px 0;
     }
@@ -143,7 +143,7 @@ header {
     .lap-btn {
         /* Landscape'is on ekraan madalam, vähendame veidi kirja suurust */
         font-size: clamp(2rem, 10vw, 4.5rem);
-        min-height: auto; 
+        min-height: auto;
     }
 
     #status-banner {
@@ -161,6 +161,8 @@ header {
 }
 
 .lap-btn {
-    aspect-ratio: 1 / 1; /* Hoiab nupud võimalusel ruudukujulised */
-    max-height: 25vh;    /* Takistab nuppude liiga kõrgeks venimist landscape'is */
+    aspect-ratio: 1 / 1;
+    /* Hoiab nupud võimalusel ruudukujulised */
+    max-height: 25vh;
+    /* Takistab nuppude liiga kõrgeks venimist landscape'is */
 }
