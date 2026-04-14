@@ -1,101 +1,108 @@
+/* --- BODY (F1 style) --- */
 body {
     background-color: #121212;
     color: white;
     font-family: 'Segoe UI', Arial, sans-serif;
     display: flex;
     justify-content: center;
-    padding-top: 50px;
+    align-items: center;
+    min-height: 100vh;
     margin: 0;
 }
 
+/* --- PANEL (Race Control style) --- */
 .admin-panel {
-    width: 90%;
-    max-width: 500px;
+    width: 95%;
+    max-width: 700px;
+    background-color: #080808;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     text-align: center;
 }
 
+/* --- TITLE --- */
 h1 {
     text-transform: uppercase;
-    letter-spacing: 4px;
-    color: #555;
+    letter-spacing: 6px;
+    color: #444;
+    margin-bottom: 30px;
 }
 
-.session-controls {
-    margin: 30px 0;
+/* --- SECTION --- */
+.menu-section {
+    margin-bottom: 30px;
 }
 
-.btn-start {
-    width: 100%;
-    padding: 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: uppercase;
+/* --- SECTION TITLE (Leaderboard style) --- */
+.section-title {
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    color: #666;
     margin-bottom: 15px;
+    text-transform: uppercase;
 }
 
-.btn-start:active {
-    background-color: #0056b3;
-}
-
-#status-text {
-    font-size: 1rem;
-    color: #888;
-}
-
-#current-mode {
-    font-weight: bold;
-    color: #fff;
-}
-
-hr {
-    border: 0;
-    border-top: 1px solid #333;
-    margin: 30px 0;
-}
-
-.flag-controls {
+/* --- MOBILE FIRST (default = 1 column) --- */
+.menu-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 15px;
 }
 
-.btn-f1 {
-    height: 120px;
-    border: none;
+/* --- TABLET --- */
+@media (min-width: 600px) {
+    .menu-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* --- DESKTOP --- */
+@media (min-width: 900px) {
+    .menu-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+/* --- BUTTON (Leaderboard inspired) --- */
+.menu-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 90px;
+    background-color: #1a1a1a;
     border-radius: 10px;
+
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 800;
     text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.1s;
-}
-
-.btn-f1:active {
-    transform: scale(0.95);
-}
-
-.btn-safe {
-    background-color: #00D21D;
-    color: black;
-}
-
-.btn-hazard {
-    background-color: #FFF200;
-    color: black;
-}
-
-.btn-danger {
-    background-color: #FF0000;
+    text-decoration: none;
     color: white;
+
+    position: relative;
+    transition: all 0.2s ease;
 }
 
-.btn-finish {
-    background-color: white;
-    color: black;
-    border: 4px dashed black;
+/* red accent stripe (Leaderboard look) */
+.menu-btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 20%;
+    height: 60%;
+    width: 5px;
+    background-color: #FF1801;
+    border-radius: 0 4px 4px 0;
+}
+
+/* hover */
+.menu-btn:hover {
+    background-color: #222;
+    transform: translateY(-2px);
+}
+
+/* active */
+.menu-btn:active {
+    transform: scale(0.97);
 }

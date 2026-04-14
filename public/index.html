@@ -13,32 +13,33 @@
         <h1>Beachside Racetrack</h1>
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            const socket = io();//mis alguses defineerisime uue serverina
+            const socket = io();//Which we defined as server
             socket.on("connect", () => {
                 console.log("Connected to server");
 
             });
         </script>
-        <div class="session-controls">
-            <p id="status-text"> <span id="current-mode">EMPLOYEE INTERFACES (LOGIN NEEDED)</span></p>
-            <div class="flag-controls">
-                <a id="start-btn" class="btn-start" href="/front-desk">Front Desk</a>
-                <a id=" start-btn" class="btn-start" href="/lap-line-tracker">Lap-line Tracker</a>
-                <a id="start-btn" class="btn-start" href="/race-control">Race Control</a>
+        <div class="menu-section">
+            <p class="section-title">EMPLOYEE INTERFACES</p>
+
+            <div class="menu-grid">
+                <a class="menu-btn" href="/front-desk">Front Desk</a>
+                <a class="menu-btn" href="/lap-line-tracker">Lap Tracker</a>
+                <a class="menu-btn" href="/race-control">Race Control</a>
             </div>
         </div>
-        <div class="session-controls">
 
-            <p id="status-text"><span id="current-mode">PUBLIC INTERFACES</span></p>
-            <div class="flag-controls">
-                <a id="start-btn" class="btn-start" href="/leader-board">Leader Board</a>
-                <a id="start-btn" class="btn-start" href="/next-race">Next Race</a>
-                <a id="start-btn" class="btn-start" href="/race-countdown">Race Countdown</a>
-                <a id="start-btn" class="btn-start" href="/race-flags">Race Flags</a>
+        <div class="menu-section">
+            <p class="section-title">PUBLIC INTERFACES</p>
+
+            <div class="menu-grid">
+                <a class="menu-btn" href="/leader-board">Leader Board</a>
+                <a class="menu-btn" href="/next-race">Next Race</a>
+                <a class="menu-btn" href="/race-countdown">Countdown</a>
+                <a class="menu-btn" href="/race-flags">Flags</a>
             </div>
         </div>
     </div>
-
 </body>
 
 </html>

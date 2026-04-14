@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const timerDisplay = document.getElementById('timer');
     const endOverlay = document.getElementById('end-session-overlay');
+    const fullBtn = document.getElementById('fullscreen-btn'); // Leiame nupu
 
     console.log("DOM fully loaded and parsed");
 
@@ -46,5 +47,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     socket.on("connect", () => {
         console.log("Connected to server via Socket.io");
+    });
+
+    /**
+     * TÄISEKRAANI FUNKTSIONAALSUS
+     */
+    if (fullBtn) {
+        fullBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Viga täisekraanile minekul: ${err.message}`);
+                });
+                // Peidame nupu kohe pärast klikki
+                fullBtn.classList.add('hidden-btn');
+            }
+        });
+    }
+
+    // Jälgime täisekraani olekut (Esc klahvi jaoks)
+    document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) {
+            // Kui täisekraanilt väljutakse, toome nupu tagasi
+            fullBtn.classList.remove('hidden-btn');
+        }
     });
 });
