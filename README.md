@@ -63,10 +63,19 @@ Before starting the program, passwords are needed for granting the permission fo
 **Safety Official**: safety_key
 
 Passwords are 8 character length numbers and low-case letters. Declare passwords by exporting them in the terminal, e.g:
+```
+export receptionist_key=8ded6076
+export observer_key=662e0f6c
+export safety_key=a2d393bc
+```
 
-    export receptionist_key=8ded6076
-    export observer_key=662e0f6c
-    export safety_key=a2d393bc
+or
+
+```
+$env:RECEPTIONIST_KEY="8ded6076"
+$env:OBSERVER_KEY="662e0f6c"
+$env:SAFETY_KEY="a2d393bc"
+```
 
 For continuing in production mode, add right after the keys in the terminal:
 
