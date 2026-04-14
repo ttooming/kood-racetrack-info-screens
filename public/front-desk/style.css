@@ -26,7 +26,7 @@ body {
 .admin-panel {
     display: none;
     justify-content: space-between;
-    width: 600px;
+    max-width: 600px;
     gap: 40px;
 }
 

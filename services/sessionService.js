@@ -177,7 +177,7 @@ function removeSession(io, sessionTitle, sessionDate) {
 function endSession(io) {
     raceState.raceMode = "DANGER";
     raceState.isActive = false;
-    raceState.currentSession = raceState.sessions.shift();
+    raceState.currentSession = raceState.sessions.shift();// session goes to position safe to start
     saveState(raceState);
     io.emit("raceModeChanged", "DANGER");
     io.emit("sessionEnded");
