@@ -115,7 +115,7 @@ io.on("connection", (socket) => {
     console.log("CONNECTED:", socket.id);
     // works continiounly
     const stateInterval = setInterval(() => {
-        io.emit("recieveRaceState", raceState);
+        io.emit("receiveRaceState", raceState);
     }, 1000);
 
     socket.on("disconnect", () => {

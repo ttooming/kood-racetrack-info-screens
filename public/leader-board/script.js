@@ -109,11 +109,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // KUULAJAD
-    socket.on("recieveRaceState", (state) => {
+    socket.on("receiveRaceState", (state) => {
         renderLeaderboard(state);
     });
 
-<<<<<<< HEAD
     socket.on("raceModeChanged", (newMode) => {
         console.log("Režiim muutus:", newMode);
         //socket.emit("getRaceState"); // Küsime värske seisundi, et bänner kohe uueneks
@@ -126,34 +125,30 @@ document.addEventListener("DOMContentLoaded", () => {
     // Küsime algseisu kohe lehe laadimisel
     //socket.emit("getRaceState");
 });
-=======
+// Küsime algseisu kohe lehe laadimisel
+//socket.emit("getRaceState");
 
-    // Küsime algseisu kohe lehe laadimisel
-    //socket.emit("getRaceState");
+/**
+  * TÄISEKRAANI FUNKTSIONAALSUS (Peidab nupu täisekraanil)
+  */
+const fullBtn = document.getElementById('fullscreen-btn');
 
-   /**
-     * TÄISEKRAANI FUNKTSIONAALSUS (Peidab nupu täisekraanil)
-     */
-    const fullBtn = document.getElementById('fullscreen-btn');
-
-    if (fullBtn) {
-        fullBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.error(`Viga: ${err.message}`);
-                });
-                // Peidame nupu kohe pärast klikki
-                fullBtn.classList.add('hidden-btn');
-            }
-        });
-    }
-
-    // Jälgime täisekraani olekut (kui tullakse Esc-ga tagasi)
-    document.addEventListener('fullscreenchange', () => {
+if (fullBtn) {
+    fullBtn.addEventListener('click', () => {
         if (!document.fullscreenElement) {
-            // Kui täisekraanilt väljutakse, toome nupu tagasi
-            fullBtn.classList.remove('hidden-btn');
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Viga: ${err.message}`);
+            });
+            // Peidame nupu kohe pärast klikki
+            fullBtn.classList.add('hidden-btn');
         }
     });
-    });
->>>>>>> origin/main
+}
+
+// Jälgime täisekraani olekut (kui tullakse Esc-ga tagasi)
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        // Kui täisekraanilt väljutakse, toome nupu tagasi
+        fullBtn.classList.remove('hidden-btn');
+    }
+});

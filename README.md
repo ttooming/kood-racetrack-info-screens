@@ -46,11 +46,17 @@ For accessing development environment, install **cross-env** in terminal:
 
     npm install cross-env
 
+### dotenv
+
+For multi-device access through Websocket, install **dotenv** in terminal:
+
+    npm install dotenv
+
 ### ngrok
 
 For accessing the program on several devices, install **ngrok** in terminal:
 
-    npm install -g ngrok
+    npm install @ngrok/ngrok
 
 ## 2. Start the server
 

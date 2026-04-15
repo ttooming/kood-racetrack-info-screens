@@ -33,6 +33,7 @@ function startRace(io) {
         finishRace(io);
     });
     //Selects first item
+    raceState.currentSession = raceState.sessions.shift();
     saveState(raceState);
     io.emit("raceStarted", raceState.currentSession)
     io.emit("raceModeChanged", "SAFE")

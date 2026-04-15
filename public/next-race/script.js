@@ -15,7 +15,7 @@ const sessionTimer = document.getElementById('session-timer');
 /**
  * 1. REAALAJALINE ANDMETE UUENDAMINE
  */
-const eventsToListen = ["recieveRaceState", "createdSession", "removedSession", "addedDriver", "editedDriver", "removedDriver"];
+const eventsToListen = ["receiveRaceState", "createdSession", "removedSession", "addedDriver", "editedDriver", "removedDriver"];
 
 eventsToListen.forEach(eventName => {
     socket.on(eventName, (data, sessions) => {
@@ -33,11 +33,6 @@ socket.on("timerUpdate", (seconds) => {
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         sessionTimer.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-<<<<<<< HEAD
-
-
-=======
->>>>>>> origin/main
         // Vilkumine, kui aeg on läbi
         seconds <= 0 ? sessionTimer.classList.add('timer-blink') : sessionTimer.classList.remove('timer-blink');
     }
@@ -47,12 +42,7 @@ socket.on("timerUpdate", (seconds) => {
  * 3. SESSIOONI JA SÕIDU LOOGIKA
  */
 socket.on("raceStarted", () => {
-<<<<<<< HEAD
-    paddockFooter.classList.add('hidden'); // Uus sõit algas, peidame bänneri
-    //socket.emit("getRaceState"); // Uuendame kohe nimekirja järgmise grupi jaoks
-=======
     paddockFooter.classList.add('hidden'); // Peidame bänneri, kui uus sõit algab
->>>>>>> origin/main
 });
 
 socket.on("sessionEnded", () => {
@@ -67,7 +57,7 @@ socket.on("sessionEnded", () => {
  */
 function updateDriverList(state) {
     let sessions = state.sessions || [];
-    
+
     // Sorteerime kellaaja järgi
     sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -80,10 +70,6 @@ function updateDriverList(state) {
         if (nextGroup.drivers && nextGroup.drivers.length > 0) {
             nextGroup.drivers.forEach(driver => {
                 const carNum = driver.car || "-";
-<<<<<<< HEAD
-                // Loome uue musta kaardi (div), mitte tabeli rea
-=======
->>>>>>> origin/main
                 const card = `
                     <div class="driver-card">
                         <div class="car-number">${carNum.toString().padStart(2, '0')}</div>
@@ -102,11 +88,7 @@ function updateDriverList(state) {
 }
 
 // Küsime andmeid kohe lehe avamisel
-<<<<<<< HEAD
-//socket.emit("getRaceState");
-=======
 socket.emit("getRaceState");
->>>>>>> origin/main
 
 socket.on("connect", () => {
     console.log("Next Race Display Online");
@@ -115,24 +97,24 @@ socket.on("connect", () => {
 /**
      * TÄISEKRAANI FUNKTSIONAALSUS (Peidab nupu täisekraanil)
      */
-    const fullBtn = document.getElementById('fullscreen-btn');
+const fullBtn = document.getElementById('fullscreen-btn');
 
-    if (fullBtn) {
-        fullBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.error(`Viga: ${err.message}`);
-                });
-                // Peidame nupu kohe pärast klikki
-                fullBtn.classList.add('hidden-btn');
-            }
-        });
-    }
-
-    // Jälgime täisekraani olekut (kui tullakse Esc-ga tagasi)
-    document.addEventListener('fullscreenchange', () => {
+if (fullBtn) {
+    fullBtn.addEventListener('click', () => {
         if (!document.fullscreenElement) {
-            // Kui täisekraanilt väljutakse, toome nupu tagasi
-            fullBtn.classList.remove('hidden-btn');
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Viga: ${err.message}`);
+            });
+            // Peidame nupu kohe pärast klikki
+            fullBtn.classList.add('hidden-btn');
         }
     });
+}
+
+// Jälgime täisekraani olekut (kui tullakse Esc-ga tagasi)
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        // Kui täisekraanilt väljutakse, toome nupu tagasi
+        fullBtn.classList.remove('hidden-btn');
+    }
+});
