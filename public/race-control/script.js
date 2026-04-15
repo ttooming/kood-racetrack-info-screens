@@ -138,14 +138,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (mode === 'DANGER') {
             const hasDrivers = nextDrivers && nextDrivers.length > 0;
-            if (!hasSession) {
-                startBtn.disabled = false;
-                endBtn.disabled = true;
-                setFlagsDisabled(true);
-            } else {
+            if (hasSession) {
                 startBtn.disabled = true;
                 endBtn.disabled = true;
                 setFlagsDisabled(false);
+            } else if (!hasDrivers) {
+                startBtn.disabled = true;
+                endBtn.disabled = true;
+                setFlagsDisabled(true);
+            } else {
+                startBtn.disabled = false;
+                endBtn.disabled = true;
+                setFlagsDisabled(true);
             }
         }
 
