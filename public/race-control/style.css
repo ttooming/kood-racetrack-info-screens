@@ -153,6 +153,7 @@ button:disabled {
 }
 
 /* 5. MODAL / POP-UP - PARANDATUD TSENTREERIMINE */
+/* 5. MODAL / POP-UP - RESPONSIVE TÄIENDUSED */
 .modal {
     position: fixed;
     z-index: 9999;
@@ -160,7 +161,7 @@ button:disabled {
     top: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.95); /* Veidi tumedam mobiilis fokuseerimiseks */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -168,13 +169,31 @@ button:disabled {
 
 .modal-content {
     background-color: #111;
-    width: 90%;
+    /* --- MUUDATUS 1: Mobiilis peaaegu täislaius, arvutis kitsam --- */
+    width: 95vw; 
     max-width: 600px;
+    
     border: 3px solid #e10600;
     border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 0 50px rgba(225, 6, 0, 0.5);
+    
+    /* --- MUUDATUS 2: Mobiilis vähem paddingut, et sisu ei lükkaks akent välja --- */
+    padding: 20px; 
+    box-sizing: border-box;
+    
+    /* --- MUUDATUS 3: Lisatud max-height ja kerimine juhuks, kui on palju sõitjaid --- */
+    max-height: 90vh;
+    overflow-y: auto;
+    
+    box-shadow: 0 0 50px rgba(225, 6, 0, 0.3);
     text-align: center;
+}
+
+/* --- MUUDATUS 4: Media Query suurematele seadmetele (Tahvel/Arvuti) --- */
+@media (min-width: 600px) {
+    .modal-content {
+        width: 80vw;
+        padding: 40px; /* Rohkem ruumi suuremal ekraanil */
+    }
 }
 
 .modal-header {
@@ -182,50 +201,57 @@ button:disabled {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #333;
-    padding-bottom: 20px;
-    margin-bottom: 30px;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .modal-header h2 {
     margin: 0;
     color: #fff;
     letter-spacing: 1px;
-    font-size: 1.8rem;
+    /* --- MUUDATUS 5: Sujuv teksti suurus --- */
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
     font-weight: 900;
 }
 
 .modal-driver-row {
     display: flex;
-    padding: 15px 20px;
+    padding: 12px 15px;
     background: #1a1a1a;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     border-radius: 10px;
-    font-size: 1.4rem;
+    /* --- MUUDATUS 6: Väiksem tekst mobiilis --- */
+    font-size: clamp(1rem, 4vw, 1.4rem);
     font-weight: bold;
 }
 
 .modal-car {
     color: #e10600;
-    width: 60px;
+    width: 50px; /* Veidi kitsam mobiilis */
     text-align: left;
 }
 
 .modal-name {
     text-transform: uppercase;
     color: #fff;
+    /* Hoiab nime ühel real ja lisab "...", kui ei mahu */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .confirm-btn {
     width: 100%;
-    padding: 22px;
+    padding: 18px;
     background-color: #e10600;
     color: white;
     border: none;
     border-radius: 12px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 15px;
+    text-transform: uppercase;
 }
 
 /* --- TAIMERI RIBA --- */
