@@ -151,11 +151,22 @@ Session and driver management.
 
 **Features:**
 
- - Create new race sessions
+ - **Create new race sessions**
+    - *Required:* session name, date, time.
+ 
+ - **Remove race sessions**
+    - *Required:* session name, date, time.
 
- - Add / edit / remove drivers
+ - **Add drivers**
+    - *Required:* session name, driver name, car number.
 
- - Assign car numbers
+ - **Edit drivers names**
+    - *Required:* session name, driver name, car number.
+ 
+ - **Remove drivers**
+    - *Required:* session name, driver name.
+
+ - **Assign car numbers**
 
 # 🌍 Public Interfaces
 
