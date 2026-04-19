@@ -47,13 +47,14 @@ header {
     letter-spacing: 1px;
 }
 
-/* Nuppude võrgustik (Pangaautomaadi loogika 3 veergu) */
 #lap-buttons-grid {
     flex-grow: 1;
     display: grid;
+    /* Vaikimisi (Portrait ja väiksemad ekraanid) 3 veergu */
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     padding: 10px 0;
+    align-content: center; /* Hoiab nupud ekraani keskel */
 }
 
 .lap-btn {
@@ -61,7 +62,7 @@ header {
     border: 4px solid #333;
     border-radius: 20px;
     color: white;
-    font-size: clamp(2.5rem, 12vw, 6rem);
+    font-size: clamp(2.5rem, 10vw, 5rem); /* Optimeeritud suurus */
     font-weight: 900;
     cursor: pointer;
     display: flex;
@@ -69,7 +70,11 @@ header {
     align-items: center;
     box-shadow: 0 6px 0 #000;
     transition: transform 0.05s;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    margin: auto;
 }
+
 
 /* Visuaalne tagasiside vajutusel */
 .btn-active-flash {
@@ -130,39 +135,16 @@ header {
     display: none !important;
 }
 
-/* --- TAHVLI KOHANDUSED (MAX 8 SÕITJAT) --- */
-
-/* Landscape režiim */
-@media (orientation: landscape) {
+/* --- TAHVEL LANDSCAPE (Taneli loogika järgi lai ekraan) --- */
+@media (min-width: 900px) {
     #lap-buttons-grid {
+        /* Laias vaates 4 veergu, et 8 nuppu täidaksid ekraani 2x4 mustris */
         grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-        padding: 5px 0;
+        gap: 20px;
     }
 
     .lap-btn {
-        /* Landscape'is on ekraan madalam, vähendame veidi kirja suurust */
-        font-size: clamp(2rem, 10vw, 4.5rem);
-        min-height: auto;
-    }
-
-    #status-banner {
-        padding: 10px;
-        font-size: 1.5rem;
+        max-height: 35vh; /* Lubame nuppudel olla veidi suuremad */
     }
 }
 
-/* Portrait režiim  */
-@media (orientation: portrait) {
-    #lap-buttons-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-    }
-}
-
-.lap-btn {
-    aspect-ratio: 1 / 1;
-    /* Hoiab nupud võimalusel ruudukujulised */
-    max-height: 25vh;
-    /* Takistab nuppude liiga kõrgeks venimist landscape'is */
-}
