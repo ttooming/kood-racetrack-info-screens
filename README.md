@@ -1,4 +1,4 @@
-# 🏁 Beachside Racetrack System
+# 🏁 Beachside Racetrack Info-Screens
 
 Real-time race management and display system for racing events at Beachside Racetrack.
 
@@ -60,15 +60,19 @@ For accessing the program on several devices, install **ngrok** in terminal:
 
 ## 2. Start the server
 
-Before starting the program, passwords are needed for granting the permission for employee's interfaces. There are:
+### Passwords
 
-**Receptionist**: receptionist_key
+Before starting the program, passwords are needed for granting the permission for employee's interfaces.
 
-**Lap-line Observer**: observer_key
+Passwords are 8 character length numbers and low-case letters:
 
-**Safety Official**: safety_key
+**Receptionist**: 8ded6076
 
-Passwords are 8 character length numbers and low-case letters. Declare passwords by exporting them in the terminal, e.g for **Mac/Linux**:
+**Lap-line Observer**: 662e0f6c
+
+**Safety Official**: a2d393bc
+
+Declare passwords by exporting them in the terminal, e.g for **Mac/Linux**:
 ```
 export receptionist_key=8ded6076
 export observer_key=662e0f6c
@@ -97,7 +101,15 @@ By default, insert in terminal:
 
     http://localhost:3000
 
-For accessing the program using **ngrok**, insert in terminal:
+For accessing the program using **ngrok**, create file **".env"** in the project root.
+
+Modify **".env"** with the following line:
+
+```
+NGROK_AUTHTOKEN=3CLVfUHXvV3z8uBho1n6DW0e1BO_3AV5aNpPtkNnB4rutmMzP
+```
+    
+Insert in terminal:
 
     ngrok http 3000
 
