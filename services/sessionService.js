@@ -1,5 +1,6 @@
 const raceState = require("../state/raceState");
 const saveState = require("../utils/saveState");
+const countdown = process.env.NODE_ENV === "development" ? 60 : 600;
 
 function addDriver(io, sessionId, name, carNumber) {
     //Finding session
@@ -178,8 +179,10 @@ function endSession(io) {
     raceState.raceMode = "DANGER";
     raceState.isActive = false;
     raceState.currentSession = null;
+    raceState.timer = raceState.duration;
     saveState(raceState);
     io.emit("raceModeChanged", "DANGER");
+    io.emit("timerUpdate", raceState.timer);
     io.emit("sessionEnded");
 }
 //Accessible elsewhere
