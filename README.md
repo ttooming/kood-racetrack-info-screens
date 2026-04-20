@@ -101,19 +101,11 @@ By default, insert in terminal:
 
     http://localhost:3000
 
-For accessing the program using **ngrok**, create file **".env"** in the project root.
-
-Modify **".env"** with the following line:
-
-```
-NGROK_AUTHTOKEN=3CLVfUHXvV3z8uBho1n6DW0e1BO_3AV5aNpPtkNnB4rutmMzP
-```
-    
-Insert in terminal:
+For accessing the program using **ngrok**, insert in terminal:
 
     ngrok http 3000
 
-That generates an address, e.g:
+An address will be generated, e.g:
 
 **https://abc123.ngrok.io**
 
