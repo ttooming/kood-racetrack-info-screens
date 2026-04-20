@@ -1,6 +1,5 @@
 const raceState = require("../state/raceState");
 const saveState = require("../utils/saveState");
-const countdown = process.env.NODE_ENV === "development" ? 60 : 600;
 
 function addDriver(io, sessionId, name, carNumber) {
     //Finding session
