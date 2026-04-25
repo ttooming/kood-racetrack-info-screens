@@ -147,10 +147,10 @@ const createTableHead = () => {
     const table = document.getElementById("upcoming-sessions");
     const headRow = `<thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Title</th>
-                        <th>Drivers</th>
+                        <th>DATE</th>
+                        <th>TIME</th>
+                        <th>TITLE</th>
+                        <th>DRIVERS</th>
                     </tr>
                 </thead>`;
     table.insertAdjacentHTML("beforeend", headRow);

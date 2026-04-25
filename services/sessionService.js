@@ -178,8 +178,10 @@ function endSession(io) {
     raceState.raceMode = "DANGER";
     raceState.isActive = false;
     raceState.currentSession = null;
+    raceState.timer = raceState.duration;
     saveState(raceState);
     io.emit("raceModeChanged", "DANGER");
+    io.emit("timerUpdate", raceState.timer);
     io.emit("sessionEnded");
 }
 //Accessible elsewhere

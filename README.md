@@ -1,4 +1,4 @@
-# 🏁 Beachside Racetrack System
+# 🏁 Beachside Racetrack Info-Screens
 
 Real-time race management and display system for racing events at Beachside Racetrack.
 
@@ -60,22 +60,26 @@ For accessing the program on several devices, install **ngrok** in terminal:
 
 ## 2. Start the server
 
-Before starting the program, passwords are needed for granting the permission for employee's interfaces. There are:
+### Passwords
 
-**Receptionist**: receptionist_key
+Before starting the program, passwords are needed for granting the permission for employee's interfaces.
 
-**Lap-line Observer**: observer_key
+Passwords are 8 character length numbers and low-case letters:
 
-**Safety Official**: safety_key
+**Receptionist**: 8ded6076
 
-Passwords are 8 character length numbers and low-case letters. Declare passwords by exporting them in the terminal, e.g:
+**Lap-line Observer**: 662e0f6c
+
+**Safety Official**: a2d393bc
+
+Declare passwords by exporting them in the terminal, e.g for **Mac/Linux**:
 ```
 export receptionist_key=8ded6076
 export observer_key=662e0f6c
 export safety_key=a2d393bc
 ```
 
-or
+or for **cmd/PowerShell**:
 
 ```
 $env:RECEPTIONIST_KEY="8ded6076"
@@ -101,7 +105,7 @@ For accessing the program using **ngrok**, insert in terminal:
 
     ngrok http 3000
 
-That generates an address, e.g:
+An address will be generated, e.g:
 
 **https://abc123.ngrok.io**
 
@@ -151,11 +155,22 @@ Session and driver management.
 
 **Features:**
 
- - Create new race sessions
+ - **Create new race sessions**
+    - *Required:* session name, date, time.
+ 
+ - **Remove race sessions**
+    - *Required:* session name, date, time.
 
- - Add / edit / remove drivers
+ - **Add drivers**
+    - *Required:* session name, driver name, car number.
 
- - Assign car numbers
+ - **Edit drivers names**
+    - *Required:* session name, driver name, car number.
+ 
+ - **Remove drivers**
+    - *Required:* session name, driver name.
+
+ - **Assign car numbers**
 
 # 🌍 Public Interfaces
 
