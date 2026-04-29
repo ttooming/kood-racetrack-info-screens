@@ -316,3 +316,5 @@ to:
  - Mobile-friendly UI
 
  - Live race control and tracking
+
+ ©
