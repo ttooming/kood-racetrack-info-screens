@@ -267,6 +267,20 @@ Examples:
 
  - `finishRace`
 
+# 📝git  Automated tests
+
+**Jest** for basic checking and bug finding:
+
+ **Timer test:**
+
+ - Timer should count down to 0
+
+**SessionService tests:**
+
+ - Should not allow duplicate name
+
+ - Should add driver successfully
+
 # ⚠️ Notes
 
  - Only one race session can be active at a time
