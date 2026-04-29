@@ -267,7 +267,7 @@ Examples:
 
  - `finishRace`
 
-# 📝git  Automated tests
+# 📝 Automated tests
 
 **Jest** for basic checking and bug finding:
 
