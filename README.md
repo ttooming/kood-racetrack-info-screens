@@ -4,6 +4,8 @@ Real-time race management and display system for racing events at Beachside Race
 
 This application includes multiple user interfaces for race control, lap tracking, and public displays, all synchronized through a live server using WebSockets.
 
+Done as **minimum viable product (MVP)**.
+
 ---
 
 # 🧠 System Overview
