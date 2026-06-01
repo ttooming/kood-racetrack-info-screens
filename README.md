@@ -1224,7 +1224,7 @@ td
 <body link="#0563C1" vlink="#954F72">
 
 
-Event (right)             STATE (below)| Start Race | Safe | Hazard | Danger | Finish Race | End Race Session
+STATE (below)             Event (right)| Start Race | Safe | Hazard | Danger | Finish Race | End Race Session
 -- | -- | -- | -- | -- | -- | --
 DANGER (OFF) | SAFE | - | - | - | - | -
 SAFE | - | - | HAZARD | DANGER | FINISH | -
@@ -1317,6 +1317,7 @@ Start race → finish race → end race session
 <img width="1640" height="2197" alt="Image" src="https://github.com/user-attachments/assets/17bfc9ac-026d-449c-9d0c-2265bb0ef14e" />
 
 Required: session is created, minimum one driver added
+
 Tap driver button during race → tap driver button after race has ended 
 
 ## Error hunting
