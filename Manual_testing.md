@@ -1350,7 +1350,7 @@ Leaderboard changes from "Next" to "Current"?
 
 Interface "Next Race" changes?
 
-Interace "Race Control" mode buttons are enabled? 
+Interface "Race Control" mode buttons are enabled? 
 
 **Race**
 
@@ -1380,4 +1380,4 @@ Interface "Next Race" changes?
 
 ## Summary
 
-Testing effort proved to be extremly valuable and was beneficial. Timer needed the most and complex testing because of the additional features we chose for perfecting the experience. We were praised by the team who we were reviewed by. Honorable mentions included domain knowledge, which helped us to design and program code with ease and vision. It was a great way to apply my knowledge for this project. Member of our team achieved #2 place in top 3 students and our project was recommedated for the graduation day presentation
+Testing effort proved to be extremly valuable and was beneficial. Timer needed the most and complex testing because of the additional features we chose for perfecting the experience. We were praised by the team who we were reviewed by. Honorable mentions included domain knowledge, which helped us to design and program code with ease and vision. It was a great way to apply my knowledge for this project. Member of our team achieved #2 place in top 3 students and our project was recommedated for the graduation day presentation.
