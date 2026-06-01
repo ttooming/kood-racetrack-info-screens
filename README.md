@@ -490,6 +490,7 @@ Test cases:
 **Input: SESSION DATE**
 
 State: valid "INPUT SESSION NAME" is entered
+
 Required: input "SESSION TIME" should also be determined, together they cannot be in the past.
 
 
@@ -599,6 +600,7 @@ Test cases:
 **Input: SESSION TIME**
 
 State: valid "INPUT SESSION NAME" and "SESSION DATE" are entered
+
 Required:  "SESSION DATE" cannot be in the past.
 
 <html xmlns:v="urn:schemas-microsoft-com:vml"
@@ -704,6 +706,7 @@ Test cases: (if current time is e.g. 09:00)
 **Input: ENTER DRIVER NAME**
 
 State: Session is registred
+
 Required: Max. 10 characters, car number and session must be declared for conformation
 
 
@@ -835,6 +838,7 @@ Test cases:
 **Input: CHOOSE CAR NUMBER**
 
 State: Session is registred, numbers are selected from dropdown menu.
+
 Required: Driver name and session must be declared for conformation
 
 <html xmlns:v="urn:schemas-microsoft-com:vml"
@@ -944,6 +948,7 @@ Test cases:
 **Input: CHOOSE SESSION**
 
 State: Sessions are registred, sessions can be selected from dropdown menu.
+
 Required: Driver name and car number must be declared for conformation
 
 
@@ -1111,7 +1116,7 @@ The values for sessions are the names inserted in input "INPUT SESSION NAME". Th
   Actual: interface doesn't allow deleting "Martin"
 
 
-- State: SAFE
+- State: FINISH
 
   Required: Session inserted, driver "Martin" assigned to car '1'
 
@@ -1254,13 +1259,15 @@ Focuses on some of the important and technically difficult states being tested.
 
 - State: SAFE
 
+  #1
+
   Event: manual race-mode-change → FINISH 
 
   Expected: timer becomes 0, race mode changes to FINISH
 
   Actual: timer becomes 0, race mode changes to FINISH
 
-
+  #2
 
   Event: server restart in Visual Studio Code while timer is running
 
@@ -1268,7 +1275,7 @@ Focuses on some of the important and technically difficult states being tested.
 
   Actual: state remains the same, timer continues counting down
 
-
+  #3
 
   Event: brauser refresh  while timer is running
 
@@ -1279,12 +1286,15 @@ Focuses on some of the important and technically difficult states being tested.
 
 - State: DANGER
 
+  #1
+
   Event: server restart in Visual Studio Code, timer is paused at x min x second
 
   Expected: state remains the same, timer is paused at that given moment
 
   Actual: state remains the same, timer is paused at that given moment
 
+  #2
 
   Event: brauser refresh, timer is paused at x min x second
 
@@ -1314,20 +1324,22 @@ Start race → finish race → end race session
 
 ### Lap-Line Tracker
 
-<img width="1640" height="2197" alt="Image" src="https://github.com/user-attachments/assets/17bfc9ac-026d-449c-9d0c-2265bb0ef14e" />
-
 Required: session is created, minimum one driver added
+
+<img width="1640" height="2197" alt="Image" src="https://github.com/user-attachments/assets/17bfc9ac-026d-449c-9d0c-2265bb0ef14e" />
 
 Tap driver button during race → tap driver button after race has ended 
 
 ## Error hunting
 
-Exploratory testing was carried out, which proved to valueable for the desired expectations:
+Exploratory testing was carried out, which proved to be valueable for the desired expectations:
 
 - Deletion of sessions with drivers
 - Driver name must be unique within session
 - Duplicate names not allowed after edit
 - Same name in different, but not in the same session 
+- Race mode displays their respective flag
+- After browser refresh in FINISH mode, Lap-Line Tracker buttons are active, but won't function
 
 Errors found were:
 
@@ -1354,7 +1366,7 @@ Errors found were:
 
 
 
-  Event: remove "Race 1", 01/01/27, 00:00 and then again "Race 1", 01/01/27, 00:00
+  Event: remove "Race 1", 01/01/27, 00:00 and then add again "Race 1", 01/01/27, 00:00
 
   Expected result: "Race 2", 01/01/27, 01:00 has ID 1 in state.json, new "Race", 01/01/27, 00:00 has ID 2 in state.json
 
@@ -1380,7 +1392,7 @@ Because race mode "DANGER" included only that race cars must stop on track with 
 
 ### Risk assessment ###
 
-Risk assessment helped us to discover and assess possible problems what that kind of a feature would bring.
+Risk assessment helped us to consider and assess possible problems what that kind of a feature would bring.
 
 <html xmlns:v="urn:schemas-microsoft-com:vml"
 xmlns:o="urn:schemas-microsoft-com:office:office"
@@ -1499,7 +1511,7 @@ td
 
 Risk | Impact (0-10) | Likelihood   (0-10) | Riskscore
 -- | -- | -- | --
-Previous prematurely ended session timer starts with new session | 8 | 8 | 64
+Previous prematurely ended session timer continues with new session timer | 8 | 8 | 64
 Browser restart will crash the timer logic | 6 | 8 | 48
 Timer isn't resetted when "FINISH" is pressed | 6 | 8 | 48
 Server restart will crash the timer logic | 6 | 6 | 36
@@ -1609,9 +1621,9 @@ Timer becomes 0 → will "FINISH" lock automatically?
 
 Does "FINISH" enable "End Race Session"?
 
-Does "FINISH" disable Lap-Line Tracker buttons?
+Does "FINISH" disable Lap-Line Tracker buttons? *(Users are granted one final button press for finishing in FINISH mode)*
 
-"End Race Session" → "Start New Race" is enabled?
+"End Race Session" → "Start New Race" is enabled when next session has drivers?
 
 
 **Real-time testing**
@@ -1629,14 +1641,14 @@ Is interface "Race Control" correctly scalabled in mobile device?
 
 Is interface "Lap-Line Tracker" correctly scalabled in tablet device?
 
-Are Race Control" and "Lap-Line Tracker" buttons correctly in the frame of their respective interfaces?
+Are "Race Control" and "Lap-Line Tracker" buttons correctly in the frame of their respective interfaces?
 
 Are pop-up windows correctly in the frame of the screen?
 
 
 **Edge cases**
 
-"FINISH" is pressed before timer reaches 0 (Requirements state that race can be ended by pressing "FINISH")
+"FINISH" is pressed before timer reaches 0 *(Requirements state that race can be ended by pressing "FINISH")*
 
 Each driver's lap button is pressed while race mode is "Finish"
 
@@ -1645,6 +1657,8 @@ Server is restarted in the middle of the race
 Browser is restarted in the middle of the race
 
 Browser is restarted while race mode is in "DANGER"
+
+Browser is restarted while race mode is in "FINISH"
 
 Wrong access key
 
@@ -1659,7 +1673,17 @@ Leaderboard changes from "Next" to "Current"?
 
 Interface "Next Race" changes?
 
-Interace "Race Control" mode buttons are enabled? 
+Interface "Race Control" mode buttons are enabled? 
+
+**Race**
+
+Lap buttons add one lap to driver?
+
+Fastest lap is calculated and displayed?
+
+Current lap is calculated and displayed?
+
+Drivers are ordered by the fastest lap?
 
 **Finish**
 
@@ -1679,4 +1703,4 @@ Interface "Next Race" changes?
 
 ## Summary
 
-Testing effort proved to be extremly valuable and was beneficial. Timer needed the most and complex testing because of the additional features we chose for perfecting the experience. We were praised by the team who we were reviewed by. Honorable mentions included domain knowledge, which helped us to design and programm code with ease and vision. It was a great way to apply my knowledge for this project. Member of our team achieved #2 place in top 3 students and our project was recommedated for the graduation day presentation
+Testing effort proved to be extremly valuable and was beneficial. Timer needed the most and complex testing because of the additional features we chose for perfecting the experience. We were praised by the team who we were reviewed by. Honorable mentions included domain knowledge, which helped us to design and program code with ease and vision. It was a great way to apply my knowledge for this project. Member of our team achieved #2 place in top 3 students and our project was recommedated for the graduation day presentation.
