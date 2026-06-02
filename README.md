@@ -343,6 +343,7 @@ Performed structured testing using black-box, white-box and experience-based tes
   - State transition testing
   - Checklist based testing
   - Error guessing
+  - Unit testing as automated tests
 - I tested:
   - driver/session input fields and dropdown menus 
   - race state transitions (**DANGER**(off) → **SAFE/HAZARD/DANGER** → **FINISH**)
